@@ -16,13 +16,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 
-using ObjCRuntime;
-using Foundation;
-#if !COREBUILD
-using CoreAnimation;
-#if !TVOS
-using CoreMidi;
-#endif
+using ObjCRuntime; 
 using AudioUnit;
 #endif
 
@@ -50,7 +44,7 @@ namespace AudioToolbox {
 	public class MusicSequence : DisposableObject
 	{
 #if !COREBUILD
-		[Preserve (Conditional = true)]
+		//[Preserve (Conditional = true)]
 		internal MusicSequence (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

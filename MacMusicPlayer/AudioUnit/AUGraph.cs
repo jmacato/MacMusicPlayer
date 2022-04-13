@@ -39,8 +39,7 @@ using System.Threading;
 
 using AudioToolbox;
 using ObjCRuntime;
-using Foundation;
-using CoreFoundation;
+ using CoreFoundation;
 
 #if !NETXXX
 using NativeHandle = System.IntPtr;
@@ -61,33 +60,14 @@ namespace AudioUnit
 		FormatNotSupported			= -10868,
 		InvalidElement				= -10877,		
 	}
-
-#if NETXXX
-	[SupportedOSPlatform ("ios")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("tvos")]
-	[UnsupportedOSPlatform ("tvos14.0")]
-	[UnsupportedOSPlatform ("macos11.0")]
-	[UnsupportedOSPlatform ("ios14.0")]
-#if TVOS
-	[Obsolete ("Starting with tvos14.0 use 'AVAudioEngine' instead.", DiagnosticId = "BI1234", UrlFormat = "https://github.com/xamarin/xamarin-macios/wiki/Obsolete")]
-#elif MONOMAC
+ 
 	[Obsolete ("Starting with macos11.0 use 'AVAudioEngine' instead.", DiagnosticId = "BI1234", UrlFormat = "https://github.com/xamarin/xamarin-macios/wiki/Obsolete")]
-#elif IOS
-	[Obsolete ("Starting with ios14.0 use 'AVAudioEngine' instead.", DiagnosticId = "BI1234", UrlFormat = "https://github.com/xamarin/xamarin-macios/wiki/Obsolete")]
-#endif
-#else
-	[Deprecated (PlatformName.iOS, 14,0, message: "Use 'AVAudioEngine' instead.")]
-	[Deprecated (PlatformName.TvOS, 14,0, message: "Use 'AVAudioEngine' instead.")]
-	[Deprecated (PlatformName.MacOSX, 11,0, message: "Use 'AVAudioEngine' instead.")]
-#endif
+ 
 	public class AUGraph : DisposableObject
 	{
 		readonly GCHandle gcHandle;
 
-		[Preserve (Conditional = true)]
-		internal AUGraph (NativeHandle handle, bool owns)
+ 		internal AUGraph (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{
 			gcHandle = GCHandle.Alloc (this);

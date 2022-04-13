@@ -32,7 +32,7 @@
 
 using System;
 using System.Runtime.InteropServices;
-using Foundation;
+// using Foundation;
 using ObjCRuntime;
 
 #if !NETXXX
@@ -42,7 +42,7 @@ using NativeHandle = System.IntPtr;
 namespace CoreFoundation {
 
 	// CFURLPathStyle -> CFIndex -> CFURL.h
-	[Native]
+	// [Native]
 	public enum CFUrlPathStyle : long {
 		POSIX = 0,
 		HFS = 1,
@@ -66,7 +66,7 @@ namespace CoreFoundation {
 			/* CFURLPathStyle */ nint pathStyle, 
 			/* Boolean */ [MarshalAs (UnmanagedType.I1)] bool isDirectory);
 		
-		[Preserve (Conditional = true)]
+		// //[Preserve (Conditional = true)]
 		internal CFUrl (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{
@@ -141,8 +141,8 @@ namespace CoreFoundation {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 #else
-		[iOS (7,0)]
-		[Mac (10,9)]
+		// //[iOS (7,0)]
+		// //[Mac (10,9)]
 #endif
 		[DllImport (Constants.CoreFoundationLibrary)]
 		[return: MarshalAs (UnmanagedType.I1)]
@@ -154,8 +154,8 @@ namespace CoreFoundation {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 #else
-		[iOS (7,0)]
-		[Mac (10,9)]
+		// //[iOS (7,0)]
+		// //[Mac (10,9)]
 #endif
 		public bool IsFileReference {
 			get {

@@ -91,7 +91,7 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		extern static /* OSStatus */ MusicPlayerStatus DisposeMusicPlayer (/* MusicPlayer */ IntPtr inPlayer);
 							      
-		[Preserve (Conditional = true)]
+		//[Preserve (Conditional = true)]
 		MusicPlayer (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

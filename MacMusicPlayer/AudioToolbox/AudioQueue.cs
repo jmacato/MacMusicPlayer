@@ -78,8 +78,8 @@ namespace AudioToolbox {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 #else
-		[iOS (10,0)]
-		[Mac (10,12)]
+		//[iOS (10,0)]
+		//[Mac (10,12)]
 #endif
 		CannotStartYet       = -66665,
 		

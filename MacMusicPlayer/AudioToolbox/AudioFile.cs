@@ -37,8 +37,7 @@ using System.Runtime.InteropServices;
 
 using ObjCRuntime;
 using CoreFoundation;
-using Foundation;
-
+ 
 using OSStatus = System.Int32;
 using AudioFileID = System.IntPtr;
 
@@ -51,18 +50,7 @@ namespace AudioToolbox {
 	public enum AudioFileType {  // UInt32 AudioFileTypeID
 		AIFF = 0x41494646, // AIFF
 		AIFC = 0x41494643, // AIFC
-		WAVE = 0x57415645, // WAVE
-#if NETXXX
-		[SupportedOSPlatform ("ios11.0")]
-		[SupportedOSPlatform ("macos10.13")]
-		[SupportedOSPlatform ("tvos11.0")]
-		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[NoWatch]
-		[iOS (11,0)]
-		[Mac (10,13)]
-		[TV (11,0)]
-#endif
+		WAVE = 0x57415645, // WAVE 
 		RF64 = 0x52463634, // RF64
 		SoundDesigner2 = 0x53643266, // Sd2f
 		Next = 0x4e655854, // NeXT
@@ -77,30 +65,8 @@ namespace AudioToolbox {
 		CAF = 0x63616666, // caff
 		ThreeGP = 0x33677070, // 3gpp
 		ThreeGP2 = 0x33677032, // 3gp2
-		AMR = 0x616d7266, // amrf
-#if NETXXX
-		[SupportedOSPlatform ("ios11.0")]
-		[SupportedOSPlatform ("macos10.13")]
-		[SupportedOSPlatform ("tvos11.0")]
-		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[NoWatch]
-		[iOS (11,0)]
-		[Mac (10,13)]
-		[TV (11,0)]
-#endif
-		FLAC =  0x666c6163, // flac
-#if NETXXX
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("macos10.15")]
-		[SupportedOSPlatform ("tvos13.0")]
-		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[NoWatch]
-		[iOS (13,0)]
-		[Mac (10,15)]
-		[TV (13,0)]
-#endif
+		AMR = 0x616d7266, // amrf 
+		FLAC =  0x666c6163, // flac 
 		LatmInLoas = 0x6c6f6173, // loas
 	}
 
@@ -261,70 +227,25 @@ namespace AudioToolbox {
 			}
 		}
 	}
-
-#if NETXXX
-	[SupportedOSPlatform ("ios13.0")]
-	[SupportedOSPlatform ("macos10.15")]
-	[SupportedOSPlatform ("tvos13.0")]
-	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[NoWatch]
-	[iOS (13,0)]
-	[Mac (10,15)]
-	[TV (13,0)]
-#endif
+ 
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioPacketRangeByteCountTranslation {
 		public long Packet;
 		public long PacketCount;
 		public long ByteCountUpperBound;
 	}
-
-#if NETXXX
-	[SupportedOSPlatform ("ios13.0")]
-	[SupportedOSPlatform ("macos10.15")]
-	[SupportedOSPlatform ("tvos13.0")]
-	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[NoWatch]
-	[iOS (13,0)]
-	[Mac (10,15)]
-	[TV (13,0)]
-#endif
+ 
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioPacketRollDistanceTranslation {
 		public long Packet;
 		public long RollDistance;
 	}
-
-#if NETXXX
-	[SupportedOSPlatform ("ios13.0")]
-	[SupportedOSPlatform ("macos10.15")]
-	[SupportedOSPlatform ("tvos13.0")]
-	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[NoWatch]
-	[iOS (13,0)]
-	[Mac (10,15)]
-	[TV (13,0)]
-#endif
+ 
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioIndependentPacketTranslation {
 		public long Packet;
 		public long IndependentlyDecodablePacket;
-	}
-
-#if NETXXX
-	[SupportedOSPlatform ("ios13.0")]
-	[SupportedOSPlatform ("macos10.15")]
-	[SupportedOSPlatform ("tvos13.0")]
-	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[NoWatch]
-	[iOS (13,0)]
-	[Mac (10,15)]
-	[TV (13,0)]
-#endif
+	} 
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioPacketDependencyInfoTranslation {
 		public long Packet;
@@ -636,7 +557,7 @@ namespace AudioToolbox {
 		}
 #endif
 
-		[Preserve (Conditional = true)]
+		// //[Preserve (Conditional = true)]
 		internal AudioFile (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{
@@ -1335,7 +1256,7 @@ namespace AudioToolbox {
 			}
 		}
 
-		[Advice ("Use 'DataFormat' instead.")]
+		// [Advice ("Use 'DataFormat' instead.")]
 		public AudioStreamBasicDescription StreamBasicDescription {
 			get {
 				return GetProperty<AudioStreamBasicDescription> (AudioFileProperty.DataFormat) ?? default (AudioStreamBasicDescription);
@@ -1421,11 +1342,11 @@ namespace AudioToolbox {
 			}
 		}
 
-		public NSData? AlbumArtwork {
-			get {
-				return Runtime.GetNSObject<NSData> (GetIntPtr (AudioFileProperty.AlbumArtwork));
-			}
-		}
+		// public NSData? AlbumArtwork {
+		// 	get {
+		// 		return Runtime.GetNSObject<NSData> (GetIntPtr (AudioFileProperty.AlbumArtwork));
+		// 	}
+		// }
 		
 		public AudioChannelLayout? ChannelLayout {
 			get {
@@ -1563,15 +1484,15 @@ namespace AudioToolbox {
 			}
 		}
 
-		public AudioFileInfoDictionary? InfoDictionary {
-			get {
-				var ptr = GetIntPtr (AudioFileProperty.InfoDictionary);
-				if (ptr == IntPtr.Zero)
-					return null;
-
-				return new AudioFileInfoDictionary(new NSMutableDictionary (ptr, true));
-			}
-		}		
+		// public AudioFileInfoDictionary? InfoDictionary {
+		// 	get {
+		// 		var ptr = GetIntPtr (AudioFileProperty.InfoDictionary);
+		// 		if (ptr == IntPtr.Zero)
+		// 			return null;
+		//
+		// 		return new AudioFileInfoDictionary(new NSMutableDictionary (ptr, true));
+		// 	}
+		// }		
 
 		public long PacketToFrame (long packet)
 		{
@@ -1640,152 +1561,152 @@ namespace AudioToolbox {
 			}
 		}
 	}
-
-#if NETXXX
-	[SupportedOSPlatform ("ios")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("tvos")]
-#endif
-	public class AudioFileInfoDictionary : DictionaryContainer
-	{
-		internal AudioFileInfoDictionary (NSDictionary dict)
-			: base (dict)
-		{
-		}
-
-		public string? Album {
-			get {
-				return GetStringValue ("album");
-			}
-		}
-
-		public string? ApproximateDurationInSeconds {
-			get {
-				return GetStringValue ("approximate duration in seconds");
-			}
-		}
-
-		public string? Artist {
-			get {
-				return GetStringValue ("artist");
-			}
-		}
-
-		public string? ChannelLayout	 {
-			get {
-				return GetStringValue ("channel layout");				
-			}
-		}
-
-		public string? Composer {
-			get {
-				return GetStringValue ("composer");
-			}
-		}
-
-		public string? Comments {
-			get {
-				return GetStringValue ("comments");
-			}
-		}
-
-		public string? Copyright {
-			get {
-				return GetStringValue ("copyright");
-			}
-		}
-
-		public string? EncodingApplication {
-			get {
-				return GetStringValue ("encoding application");
-			}
-		}
-
-		public string? Genre {
-			get {
-				return GetStringValue ("genre");
-			}
-		}
-
-		public string? ISRC {
-			get {
-				return GetStringValue ("ISRC");
-			}
-		}
-
-		public string? KeySignature {
-			get {
-				return GetStringValue ("key signature");
-			}
-		}
-
-		public string? Lyricist {
-			get {
-				return GetStringValue ("lyricist");
-			}
-		}
-
-		public string? NominalBitRate {
-			get {
-				return GetStringValue ("nominal bit rate");				
-			}
-		}
-
-		public string? RecordedDate {
-			get {
-				return GetStringValue ("recorded date");
-			}
-		}
-
-		public string? SourceBitDepth {
-			get {
-				return GetStringValue ("source bit depth");
-			}
-		}
-
-		public string? SourceEncoder {
-			get {
-				return GetStringValue ("source encoder");
-			}
-		}
-
-		public string? SubTitle {
-			get {
-				return GetStringValue ("subtitle");
-			}
-		}
-
-		public string? Tempo {
-			get {
-				return GetStringValue ("tempo");
-			}
-		}
-
-		public string? TimeSignature {
-			get {
-				return GetStringValue ("time signature");
-			}
-		}
-
-		public string? Title {
-			get {
-				return GetStringValue ("title");
-			}
-		}
-
-		public string? TrackNumber {
-			get {
-				return GetStringValue ("track number");
-			}
-		}
-
-		public string? Year {
-			get {
-				return GetStringValue ("year");
-			}
-		}
-	}
+//
+// #if NETXXX
+// 	[SupportedOSPlatform ("ios")]
+// 	[SupportedOSPlatform ("maccatalyst")]
+// 	[SupportedOSPlatform ("macos")]
+// 	[SupportedOSPlatform ("tvos")]
+// #endif
+// 	public class AudioFileInfoDictionary : DictionaryContainer
+// 	{
+// 		internal AudioFileInfoDictionary (NSDictionary dict)
+// 			: base (dict)
+// 		{
+// 		}
+//
+// 		public string? Album {
+// 			get {
+// 				return GetStringValue ("album");
+// 			}
+// 		}
+//
+// 		public string? ApproximateDurationInSeconds {
+// 			get {
+// 				return GetStringValue ("approximate duration in seconds");
+// 			}
+// 		}
+//
+// 		public string? Artist {
+// 			get {
+// 				return GetStringValue ("artist");
+// 			}
+// 		}
+//
+// 		public string? ChannelLayout	 {
+// 			get {
+// 				return GetStringValue ("channel layout");				
+// 			}
+// 		}
+//
+// 		public string? Composer {
+// 			get {
+// 				return GetStringValue ("composer");
+// 			}
+// 		}
+//
+// 		public string? Comments {
+// 			get {
+// 				return GetStringValue ("comments");
+// 			}
+// 		}
+//
+// 		public string? Copyright {
+// 			get {
+// 				return GetStringValue ("copyright");
+// 			}
+// 		}
+//
+// 		public string? EncodingApplication {
+// 			get {
+// 				return GetStringValue ("encoding application");
+// 			}
+// 		}
+//
+// 		public string? Genre {
+// 			get {
+// 				return GetStringValue ("genre");
+// 			}
+// 		}
+//
+// 		public string? ISRC {
+// 			get {
+// 				return GetStringValue ("ISRC");
+// 			}
+// 		}
+//
+// 		public string? KeySignature {
+// 			get {
+// 				return GetStringValue ("key signature");
+// 			}
+// 		}
+//
+// 		public string? Lyricist {
+// 			get {
+// 				return GetStringValue ("lyricist");
+// 			}
+// 		}
+//
+// 		public string? NominalBitRate {
+// 			get {
+// 				return GetStringValue ("nominal bit rate");				
+// 			}
+// 		}
+//
+// 		public string? RecordedDate {
+// 			get {
+// 				return GetStringValue ("recorded date");
+// 			}
+// 		}
+//
+// 		public string? SourceBitDepth {
+// 			get {
+// 				return GetStringValue ("source bit depth");
+// 			}
+// 		}
+//
+// 		public string? SourceEncoder {
+// 			get {
+// 				return GetStringValue ("source encoder");
+// 			}
+// 		}
+//
+// 		public string? SubTitle {
+// 			get {
+// 				return GetStringValue ("subtitle");
+// 			}
+// 		}
+//
+// 		public string? Tempo {
+// 			get {
+// 				return GetStringValue ("tempo");
+// 			}
+// 		}
+//
+// 		public string? TimeSignature {
+// 			get {
+// 				return GetStringValue ("time signature");
+// 			}
+// 		}
+//
+// 		public string? Title {
+// 			get {
+// 				return GetStringValue ("title");
+// 			}
+// 		}
+//
+// 		public string? TrackNumber {
+// 			get {
+// 				return GetStringValue ("track number");
+// 			}
+// 		}
+//
+// 		public string? Year {
+// 			get {
+// 				return GetStringValue ("year");
+// 			}
+// 		}
+// 	}
 
 	delegate int ReadProc (IntPtr clientData, long position, int requestCount, IntPtr buffer, out int actualCount);
 	delegate int WriteProc (IntPtr clientData, long position, int requestCount, IntPtr buffer, out int actualCount);

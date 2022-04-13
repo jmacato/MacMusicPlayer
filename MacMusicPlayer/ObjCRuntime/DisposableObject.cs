@@ -9,7 +9,6 @@
 using System;
 using System.Runtime.InteropServices;
 using ObjCRuntime;
-using Foundation;
 
 #nullable enable 
 
@@ -68,8 +67,8 @@ namespace ObjCRuntime {
  
 		void InitializeHandle (NativeHandle handle, bool verify)
 		{ 
-			if (verify && handle == NativeHandle.Zero && Class.ThrowOnInitFailure) {
-				throw new Exception ($"Could not initialize an instance of the type '{GetType ().FullName}': handle is null.\n{Constants.SetThrowOnInitFailureToFalse}.");
+			if (verify && handle == NativeHandle.Zero  ) {
+				throw new Exception ($"Could not initialize an instance of the type '{GetType ().FullName}': handle is null..");
 			} 
 			this.handle = handle;
 		}

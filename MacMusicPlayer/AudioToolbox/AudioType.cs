@@ -89,8 +89,8 @@ namespace AudioToolbox {
 		[SupportedOSPlatform ("maccatalyst")]
 #else
 		[NoWatch]
-		[iOS (13,0)]
-		[Mac (10,15)]
+		//[iOS (13,0)]
+		//[Mac (10,15)]
 		[TV (13,0)]
 #endif
 		LatmInLoas              = 0x6c6f6173, // 'loas'

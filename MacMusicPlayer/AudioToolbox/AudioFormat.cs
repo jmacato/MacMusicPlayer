@@ -34,7 +34,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using CoreFoundation;
-using Foundation;
+// using Foundation;
 using ObjCRuntime;
 
 using OSStatus = System.Int32;
@@ -49,7 +49,7 @@ namespace AudioToolbox {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 #else
-	[Watch (6,0)]
+	// [Watch (6,0)]
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioFormat
@@ -428,7 +428,7 @@ namespace AudioToolbox {
 		[Obsolete ("Starting with ios8.0.", DiagnosticId = "BI1234", UrlFormat = "https://github.com/xamarin/xamarin-macios/wiki/Obsolete")]
 #endif
 #else
-		[Deprecated (PlatformName.iOS, 8, 0)]
+		// [Deprecated (PlatformName.iOS, 8, 0)]
 #endif
 		HardwareCodecCapabilities	= 0x68776363,	// 'hwcc'
 #endif

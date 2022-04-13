@@ -35,8 +35,7 @@ using System.Runtime.InteropServices;
 
 using ObjCRuntime;
 using AudioToolbox;
-using Foundation;
-using System.Runtime.Versioning;
+ using System.Runtime.Versioning;
 
 namespace AudioUnit
 {

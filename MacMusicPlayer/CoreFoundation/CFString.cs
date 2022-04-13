@@ -38,7 +38,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 
 using ObjCRuntime;
-using Foundation;
+// using Foundation;
 
 #if !NETXXX
 using NativeHandle = System.IntPtr;
@@ -174,7 +174,7 @@ namespace CoreFoundation {
 		}
 #endif
 		
-		[Preserve (Conditional = true)]
+		// //[Preserve (Conditional = true)]
 #if NETXXX
 		internal CFString (NativeHandle handle, bool owns)
 #else

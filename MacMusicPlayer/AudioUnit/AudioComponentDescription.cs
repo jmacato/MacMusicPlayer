@@ -35,9 +35,8 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using ObjCRuntime;
-using AudioToolbox;
-using Foundation;
-
+// using AudioToolbox;
+ 
 namespace AudioUnit
 {
     public enum AudioComponentType : uint { // OSType in AudioComponentDescription
@@ -56,7 +55,7 @@ namespace AudioUnit
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 #else
-		[iOS (7,0)]
+		////[iOS (7,0)]
 #endif
 		MIDIProcessor		= 0x61756d69, // 'aumi'
 
@@ -66,7 +65,7 @@ namespace AudioUnit
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 #else
-		[iOS (7,0)]
+		////[iOS (7,0)]
 #endif
 		RemoteEffect		= 0x61757278, // 'aurx',
 #if NETXXX
@@ -74,7 +73,7 @@ namespace AudioUnit
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 #else
-		[iOS (7,0)]
+		////[iOS (7,0)]
 #endif
 		RemoteGenerator		= 0x61757267, // 'aurg',
 #if NETXXX
@@ -82,7 +81,7 @@ namespace AudioUnit
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 #else
-		[iOS (7,0)]
+		////[iOS (7,0)]
 #endif
 		RemoteInstrument	= 0x61757269, // 'auri',
 #if NETXXX
@@ -90,7 +89,7 @@ namespace AudioUnit
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 #else
-		[iOS (7,0)]
+		////[iOS (7,0)]
 #endif
 		RemoteMusicEffect	= 0x6174726d, // 'aurm'
 #endif
@@ -109,7 +108,7 @@ namespace AudioUnit
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 #else
-		[Mac (10, 15)]
+		////[Mac (10, 15)]
 #endif
 		Remote=0x72696f63, // 'rioc'
 		VoiceProcessingIO = 0x7670696f // 'vpio'
@@ -127,7 +126,7 @@ namespace AudioUnit
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 #else
-		[iOS (8,0)]
+		////[iOS (8,0)]
 #endif
 		MidiSynth	= 0x6d73796e, // 'msyn'
 	}
@@ -158,9 +157,9 @@ namespace AudioUnit
 		[Obsolete ("Starting with ios13.0 use 'AudioTypeConverter.NewTimePitch' instead.", DiagnosticId = "BI1234", UrlFormat = "https://github.com/xamarin/xamarin-macios/wiki/Obsolete")]
 #endif
 #else
-		[Deprecated (PlatformName.iOS, 13,0, message: "Use 'AudioTypeConverter.NewTimePitch' instead.")]
-		[Deprecated (PlatformName.TvOS, 13,0, message: "Use 'AudioTypeConverter.NewTimePitch' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6,0, message: "Use 'AudioTypeConverter.NewTimePitch' instead.")]
+		//[Deprecated (PlatformName.iOS, 13,0, message: "Use 'AudioTypeConverter.NewTimePitch' instead.")]
+		//[Deprecated (PlatformName.TvOS, 13,0, message: "Use 'AudioTypeConverter.NewTimePitch' instead.")]
+		//[Deprecated (PlatformName.WatchOS, 6,0, message: "Use 'AudioTypeConverter.NewTimePitch' instead.")]
 #endif
 		AUiPodTime=0x6970746d, // 'iptm'
 #endif
@@ -182,7 +181,7 @@ namespace AudioUnit
 		[Obsolete ("Starting with ios7.0.", DiagnosticId = "BI1234", UrlFormat = "https://github.com/xamarin/xamarin-macios/wiki/Obsolete")]
 #endif
 #else
-		[Obsoleted (PlatformName.iOS, 7, 0)]
+		//[Obsoleted (PlatformName.iOS, 7, 0)]
 #endif
 		DCFilter=0x6463666c, // 'dcfl'
 		ParametricEQ=0x706d6571, // 'pmeq'
@@ -194,7 +193,7 @@ namespace AudioUnit
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 #else
-		[iOS (8, 0)]
+		////[iOS (8, 0)]
 #endif
 		SampleDelay=0x73646c79, // 'sdly'
 		Distortion=0x64697374, // 'dist'
@@ -221,10 +220,10 @@ namespace AudioUnit
 #endif
 		[UnsupportedOSPlatform ("maccatalyst")]
 #else
-		[Unavailable (PlatformName.MacCatalyst)]
-		[Deprecated (PlatformName.iOS, 13,0, message: "Use 'AudioTypeEffect.GraphicEQ' instead.")]
-		[Deprecated (PlatformName.TvOS, 13,0, message: "Use 'AudioTypeEffect.GraphicEQ' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6,0, message: "Use 'AudioTypeEffect.GraphicEQ' instead.")]
+		//[Unavailable (PlatformName.MacCatalyst)]
+		//[Deprecated (PlatformName.iOS, 13,0, message: "Use 'AudioTypeEffect.GraphicEQ' instead.")]
+		//[Deprecated (PlatformName.TvOS, 13,0, message: "Use 'AudioTypeEffect.GraphicEQ' instead.")]
+		//[Deprecated (PlatformName.WatchOS, 6,0, message: "Use 'AudioTypeEffect.GraphicEQ' instead.")]
 #endif
 		AUiPodEQ=0x69706571, // 'ipeq'
 #endif
@@ -234,8 +233,8 @@ namespace AudioUnit
 		[SupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 #else
-		[Mac (10,15)]
-		[Unavailable (PlatformName.MacCatalyst)]
+		////[Mac (10,15)]
+		//[Unavailable (PlatformName.MacCatalyst)]
 #endif
 		Reverb2=0x72766232, // 'rvb2'
 		NBandEq=0x6e626571, // 'nbeq'
@@ -257,7 +256,7 @@ namespace AudioUnit
 		[Obsolete ("Starting with macos10.10 use 'Spacial' instead.", DiagnosticId = "BI1234", UrlFormat = "https://github.com/xamarin/xamarin-macios/wiki/Obsolete")]
 #endif
 #else
-		[Deprecated (PlatformName.MacOSX, 10, 10, message : "Use 'Spacial' instead.")]
+		//[Deprecated (PlatformName.MacOSX, 10, 10, message : "Use 'Spacial' instead.")]
 #endif
 		ThreeD=0x33646d78, // '3dmx'
 #else

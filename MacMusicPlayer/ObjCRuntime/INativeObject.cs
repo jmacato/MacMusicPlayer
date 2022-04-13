@@ -1,7 +1,6 @@
 #nullable enable
 
 using System;
-using Foundation;
 using NativeHandle = System.IntPtr;
 
 namespace ObjCRuntime

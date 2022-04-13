@@ -36,7 +36,7 @@ using System.Runtime.InteropServices;
 
 using ObjCRuntime;
 using CoreFoundation;
-using Foundation;
+// using Foundation;
 
 using OSStatus = System.Int32;
 using AudioFileStreamID = System.IntPtr;
@@ -434,7 +434,7 @@ namespace AudioToolbox {
 			}
 		}
 
-		[Advice ("Use 'DataFormat' instead.")]
+		// [Advice ("Use 'DataFormat' instead.")]
 		public AudioStreamBasicDescription StreamBasicDescription {
 			get {
 				return DataFormat;

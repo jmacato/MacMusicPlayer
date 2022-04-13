@@ -115,7 +115,7 @@ namespace AudioToolbox
 
 		public event AudioConverterComplexInputData? InputData;
 
-		[Preserve (Conditional = true)]
+		//[Preserve (Conditional = true)]
 		internal AudioConverter (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

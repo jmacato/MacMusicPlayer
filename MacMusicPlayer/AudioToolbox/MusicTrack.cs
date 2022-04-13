@@ -19,8 +19,7 @@ using System;
 using System.Runtime.InteropServices;
 
 using ObjCRuntime;
-using Foundation;
-#if IOS
+ #if IOS
 using CoreMidi;
 #endif
 

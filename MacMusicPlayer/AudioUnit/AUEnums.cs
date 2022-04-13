@@ -37,8 +37,7 @@ using System.Threading;
 using AudioToolbox;
 using ObjCRuntime;
 using CoreFoundation;
-using Foundation;
-
+ 
 namespace AudioUnit
 {
 	public enum AudioUnitStatus { // Implictly cast to OSType
@@ -63,11 +62,11 @@ namespace AudioUnit
 		Initialized = -10849,
 		InvalidOfflineRender = -10848,
 		Unauthorized = -10847,
-		[iOS (11,0), Mac (10,13), TV (11,0), NoWatch]
+		// ////[iOS (11,0), Mac (10,13), TV (11,0), NoWatch]
 		MidiOutputBufferFull = -66753,
-		[iOS (11,3), Mac (10,13,4), TV (11,3), NoWatch]
+		// ////[iOS (11,3), Mac (10,13,4), TV (11,3), NoWatch]
 		InvalidParameterValue = -66743,
-		[iOS (11,0), Mac (10,13), TV (11,0), NoWatch]
+		// ////[iOS (11,0), Mac (10,13), TV (11,0), NoWatch]
 		ExtensionNotFound = -66744,
 	}
 
@@ -80,7 +79,7 @@ namespace AudioUnit
 		NotPermitted			= -66748,
 		InitializationTimedOut	= -66747,
 		InvalidFormat			= -66746,
-		[iOS (10,0), Mac (10,12)]
+		////[iOS (10,0), Mac (10,12)]
 		RenderTimeout			= -66745,
 	}
 
@@ -128,7 +127,7 @@ namespace AudioUnit
 		Milliseconds		= 24,
 		Ratio				= 25,
 		CustomUnit			= 26,
-		[iOS (15,0), TV (15,0), Mac (12,0), MacCatalyst (15,0)]
+		////[iOS (15,0), TV (15,0), Mac (12,0), MacCatalyst (15,0)]
 		MIDI2Controller	 	= 27,
 	}
 
@@ -137,7 +136,7 @@ namespace AudioUnit
 	{
 		CFNameRelease		= (1 << 4),
 
-		[iOS (8,0)]
+		////[iOS (8,0)]
 		OmitFromPresets		= (1 << 13),
 		PlotHistory			= (1 << 14),
 		MeterReadOnly		= (1 << 15),
@@ -189,12 +188,12 @@ namespace AudioUnit
 		TranslateUIDToBox = 1969841250, // 'uidb'
 		ClockDeviceList = 1668049699, //'clk#'
 		TranslateUidToClockDevice = 1969841251, // 'uidc',
-		[Deprecated (PlatformName.iOS, 15,0, message : "Use the 'ProcessIsMain' element instead.")]
-		[Deprecated (PlatformName.MacCatalyst, 15,0, message : "Use the 'ProcessIsMain' element instead.")]
-		[Deprecated (PlatformName.MacOSX, 12,0, message : "Use the 'ProcessIsMain' element instead.")]
+		//[Deprecated (PlatformName.iOS, 15,0, message : "Use the 'ProcessIsMain' element instead.")]
+		//[Deprecated (PlatformName.MacCatalyst, 15,0, message : "Use the 'ProcessIsMain' element instead.")]
+		//[Deprecated (PlatformName.MacOSX, 12,0, message : "Use the 'ProcessIsMain' element instead.")]
 		[Obsolete ("Use the 'ProcessIsMain' element instead.")]
 		ProcessIsMaster = 1835103092, // 'mast'
-		[iOS (15,0), MacCatalyst (15,0), Mac (12,0), NoTV, NoWatch]
+		////[iOS (15,0), MacCatalyst (15,0), Mac (12,0), NoTV, NoWatch]
 		ProcessIsMain = 1835100526, // 'main'
 		IsInitingOrExiting = 1768845172, // 'inot'
 		UserIDChanged = 1702193508, // 'euid'
@@ -208,7 +207,7 @@ namespace AudioUnit
 		ActualSampleRate = 1634955892,// 'asrt',
 		ClockDevice = 1634755428, // 'apcd',
 		IOThreadOSWorkgroup = 1869838183, // 'oswg'
-		[iOS (15,0), MacCatalyst (15,0), Mac (12,0), NoTV, NoWatch]
+		////[iOS (15,0), MacCatalyst (15,0), Mac (12,0), NoTV, NoWatch]
 		ProcessMute = 1634758765, // 'appm'
 	}
 
@@ -268,29 +267,29 @@ namespace AudioUnit
 		ParameterHistoryInfo = 53,
 		Nickname = 54,
 		OfflineRender = 37,
-		[iOS (8, 0)]
+		////[iOS (8, 0)]
 		ParameterIDName = 34,
-		[iOS (8, 0)]
+		////[iOS (8, 0)]
 		ParameterStringFromValue = 33,
 		ParameterClumpName = 35,
-		[iOS (8, 0)]
+		////[iOS (8, 0)]
 		ParameterValueFromString = 38,
 		ContextName = 25,
 		PresentationLatency = 40,
 		ClassInfoFromDocument = 50,
 		RequestViewController = 56,
 		ParametersForOverview = 57,
-		[iOS (10,0), Mac (10,12)]
+		////[iOS (10,0), Mac (10,12)]
 		SupportsMpe = 58,
-		[iOS (15,0), TV (15,0), Mac (12,0), MacCatalyst (15,0)]
+		////[iOS (15,0), TV (15,0), Mac (12,0), MacCatalyst (15,0)]
 		LastRenderSampleTime = 61,
-		[iOS (14,5), TV (14,5), Mac (11,3)]
+		////[iOS (14,5), TV (14,5), Mac (11,3)]
 		LoadedOutOfProcess = 62,
-		[iOS (15,0), TV (15,0), Mac (12,0), MacCatalyst (15,0)]
+		////[iOS (15,0), TV (15,0), Mac (12,0), MacCatalyst (15,0)]
 		MIDIOutputEventListCallback = 63,
-		[iOS (15,0), TV (15,0), Mac (12,0), MacCatalyst (15,0)]
+		////[iOS (15,0), TV (15,0), Mac (12,0), MacCatalyst (15,0)]
 		AudioUnitMIDIProtocol = 64,
-		[iOS (15,0), TV (15,0), Mac (12,0), MacCatalyst (15,0)]
+		////[iOS (15,0), TV (15,0), Mac (12,0), MacCatalyst (15,0)]
 		HostMIDIProtocol = 65,
 
 #if MONOMAC
@@ -364,7 +363,7 @@ namespace AudioUnit
 		BypassVoiceProcessing = 2100,
 		VoiceProcessingEnableAGC = 2101,
 		MuteOutput = 2104,
-		[iOS (15, 0), MacCatalyst (15, 0), NoMac, NoWatch, NoTV]
+		////[iOS (15, 0), MacCatalyst (15, 0), NoMac, NoWatch, NoTV]
 		MutedSpeechActivityEventListener = 2106,
 
 		// AUNBandEQ unit
@@ -380,18 +379,18 @@ namespace AudioUnit
 		MatrixLevels = 3006,
 		MatrixDimensions = 3009,
 		MeterClipping = 3011,
-		[iOS (10,0), Mac (10,12)]
+		////[iOS (10,0), Mac (10,12)]
 		InputAnchorTimeStamp = 3016,
 
 		// SpatialMixer
 		ReverbRoomType = 10,
 		UsesInternalReverb = 1005,
 		SpatializationAlgorithm = 3000,
-		[Deprecated (PlatformName.iOS, 9, 0)]
+		//[Deprecated (PlatformName.iOS, 9, 0)]
 		DistanceParams = 3010,
-		[Deprecated (PlatformName.iOS, 9, 0)]
+		//[Deprecated (PlatformName.iOS, 9, 0)]
 		AttenuationCurve = 3013,
-		[Deprecated (PlatformName.iOS, 9, 0)]
+		//[Deprecated (PlatformName.iOS, 9, 0)]
 		RenderingFlags = 3003,
 
 		// AUScheduledSoundPlayer
@@ -497,9 +496,9 @@ namespace AudioUnit
 		ReverbFilterFrequency				= 14,
 		ReverbFilterBandwidth				= 15,
 		ReverbFilterGain					= 16,
-		[iOS (8, 0)]
+		////[iOS (8, 0)]
 		ReverbFilterType					= 17,
-		[iOS (8, 0)]
+		////[iOS (8, 0)]
 		ReverbFilterEnable					= 18,
 
 		// AUMultiChannelMixer
@@ -553,8 +552,8 @@ namespace AudioUnit
 		AULowShelfCutoffFrequency			= 0,
 		AULowShelfGain						= 1,
 
-		[Obsoleted (PlatformName.iOS, 7, 0)]
-		AUDCFilterDecayTime					= 0,
+		// [Obsoleted (PlatformName.iOS, 7, 0)]
+		// AUDCFilterDecayTime					= 0,
 
 		// AUParametricEQ
 		ParametricEQCenterFreq				= 0,
@@ -573,12 +572,12 @@ namespace AudioUnit
 		DynamicsProcessorExpansionThreshold	= 3,
 		DynamicsProcessorAttackTime			= 4,
 		DynamicsProcessorReleaseTime 		= 5,
-		[Deprecated (PlatformName.iOS, 15, 0, message: "Use 'DynamicsProcessorOverallGain' instead.")]
-		[Deprecated (PlatformName.TvOS, 15, 0, message: "Use 'DynamicsProcessorOverallGain' instead.")]
-		[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use 'DynamicsProcessorOverallGain' instead.")]
-		[Deprecated (PlatformName.MacCatalyst, 15, 0, message: "Use 'DynamicsProcessorOverallGain' instead.")]
+		//[Deprecated (PlatformName.iOS, 15, 0, message: "Use 'DynamicsProcessorOverallGain' instead.")]
+		//[Deprecated (PlatformName.TvOS, 15, 0, message: "Use 'DynamicsProcessorOverallGain' instead.")]
+		//[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use 'DynamicsProcessorOverallGain' instead.")]
+		//[Deprecated (PlatformName.MacCatalyst, 15, 0, message: "Use 'DynamicsProcessorOverallGain' instead.")]
 		DynamicsProcessorMasterGain			= 6,
-		[iOS (15,0), TV (15,0), Mac (12,0), MacCatalyst (15,0)]
+		////[iOS (15,0), TV (15,0), Mac (12,0), MacCatalyst (15,0)]
 		DynamicsProcessorOverallGain		= 6,
 		DynamicsProcessorCompressionAmount 	= 1000,
 		DynamicsProcessorInputAmplitude		= 2000,
@@ -656,7 +655,7 @@ namespace AudioUnit
 		ObstructionAttenuation = 11,
 	}
 
-	[iOS (8, 0)]
+	////[iOS (8, 0)]
 	public enum SpatialMixerAttenuation {
 		Power = 0,
 		Exponential = 1,
@@ -665,10 +664,10 @@ namespace AudioUnit
 	}
 
 	[Flags]
-	[iOS (8, 0)]
+	////[iOS (8, 0)]
 	public enum SpatialMixerRenderingFlags {
 		InterAuralDelay = (1 << 0),
-		[Deprecated (PlatformName.iOS, 9, 0)]
+		//[Deprecated (PlatformName.iOS, 9, 0)]
 		DistanceAttenuation = (1 << 2),
 	}
 
@@ -678,14 +677,14 @@ namespace AudioUnit
 		BeganToRender = 0x02,
 		BeganToRenderLate = 0x04,
 
-		[iOS (8, 0)]
-		[Mac (10, 10)]
+		////[iOS (8, 0)]
+		// //[Mac (10, 10)]
 		Loop                   = 0x08,
-		[iOS (8, 0)]
-		[Mac (10, 10)]
+		////[iOS (8, 0)]
+		// //[Mac (10, 10)]
 		Interrupt              = 0x10,
-		[iOS (8, 0)]
-		[Mac (10, 10)]
+		////[iOS (8, 0)]
+		// //[Mac (10, 10)]
 		InterruptAtLoop        = 0x20,
 	}
 
@@ -719,14 +718,14 @@ namespace AudioUnit
 		Rewind				= 3,
 	}
 
-	[Native]
+	// [Native]
 	public enum AudioUnitBusType : long
 	{
 		Input = 1,
 		Output = 2,
 	}
 
-	[Native]
+	// [Native]
 	public enum AUHostTransportStateFlags : ulong
 	{
 		Changed = 1,
@@ -740,16 +739,16 @@ namespace AudioUnit
 		Immediate = unchecked ((long) 0xffffffff00000000),
 	}
 
-	[iOS (9,0), Mac (10,11)]
+	////[iOS (9,0), Mac (10,11)]
 	public enum AudioComponentInstantiationOptions : uint {
 		OutOfProcess = 1,
-		[NoiOS, NoTV, NoMacCatalyst]
+		// [NoiOS, NoTV, NoMacCatalyst]
 		InProcess = 2,
-		[iOS (14,5), TV (14,5), NoMac]
+		////[iOS (14,5), TV (14,5), NoMac]
 		LoadedRemotely = 1u << 31,
 	}
 
-	[Native]
+	// [Native]
 	public enum AUAudioUnitBusType : long
 	{
 		Input = 1,
@@ -847,7 +846,7 @@ namespace AudioUnit
 		VectorBasedPanning = 4,
 		StereoPassThrough = 5,
 		HrtfHQ = 6,
-		[iOS (14,0)][TV (14,0)][Mac (11,0)]
+		////[iOS (14,0)][TV (14,0)]//[Mac (11,0)]
 		UseOutputType = 7,
 	}
 
@@ -865,14 +864,14 @@ namespace AudioUnit
 		DistanceAttenuation = (1 << 2),
 	}
 
-	[iOS (10,0), Mac (10,12)]
+	////[iOS (10,0), Mac (10,12)]
 	public enum AUParameterAutomationEventType : uint {
 		Value = 0,
 		Touch = 1,
 		Release = 2,
 	}
 
-	[iOS (15,0), TV (15,0), Mac (12,0), MacCatalyst (15,0)]
+	////[iOS (15,0), TV (15,0), Mac (12,0), MacCatalyst (15,0)]
 	public enum AUVoiceIOSpeechActivityEvent : uint
 	{
 		Started = 0,
