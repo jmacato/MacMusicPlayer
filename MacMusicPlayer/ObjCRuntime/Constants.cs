@@ -1,3 +1,5 @@
+namespace ObjCRuntime;
+
 public static class Constants
 {
     public const string libSystemLibrary = "/usr/lib/libSystem.dylib";
