@@ -39,7 +39,7 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using CoreFoundation;
 using ObjCRuntime;
-using Foundation;
+// //using Foundation;
 
 namespace AudioToolbox {
 	public enum AudioFormatType : uint { // UInt32 in AudioStreamBasicDescription -- CoreAudio.framework CoreAudioTypes.h
@@ -88,10 +88,10 @@ namespace AudioToolbox {
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[NoWatch]
+		//[NoWatch]
 		//[iOS (13,0)]
 		//[Mac (10,15)]
-		[TV (13,0)]
+		//[TV (13,0)]
 #endif
 		LatmInLoas              = 0x6c6f6173, // 'loas'
 		Opus                    = 0x6f707573, // 'opus'
@@ -178,8 +178,8 @@ namespace AudioToolbox {
 		[Obsolete ("Starting with ios8.0 canonical is no longer encouraged, since fixed-point no longer provides a performance advantage over floating point. 'AudioFormatFlagsNativeFloatPacked' is preffered instead.", DiagnosticId = "BI1234", UrlFormat = "https://github.com/xamarin/xamarin-macios/wiki/Obsolete")]
 #endif
 #else
-		[Deprecated (PlatformName.iOS, 8, 0, message : "Canonical is no longer encouraged, since fixed-point no longer provides a performance advantage over floating point. 'AudioFormatFlagsNativeFloatPacked' is preffered instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 10, message : "Canonical is no longer encouraged, since fixed-point no longer provides a performance advantage over floating point. 'AudioFormatFlagsNativeFloatPacked' is preffered instead.")]
+		//[Deprecated (PlatformName.iOS, 8, 0, message : "Canonical is no longer encouraged, since fixed-point no longer provides a performance advantage over floating point. 'AudioFormatFlagsNativeFloatPacked' is preffered instead.")]
+		//[Deprecated (PlatformName.MacOSX, 10, 10, message : "Canonical is no longer encouraged, since fixed-point no longer provides a performance advantage over floating point. 'AudioFormatFlagsNativeFloatPacked' is preffered instead.")]
 #endif
 		public static readonly AudioFormatFlags AudioFormatFlagsAudioUnitCanonical = AudioFormatFlags.IsSignedInteger | (BitConverter.IsLittleEndian ? 0 : AudioFormatFlags.IsBigEndian) |
 			AudioFormatFlags.IsPacked | AudioFormatFlags.IsNonInterleaved | (AudioFormatFlags) (AudioUnitSampleFractionBits << (int)AudioFormatFlags.LinearPCMSampleFractionShift);
@@ -383,7 +383,7 @@ namespace AudioToolbox {
 	}
 
 #if !NETXXX
-	[Watch (3,0)]
+	//[Watch (3,0)]
 #endif
 	[Flags]
 	public enum AudioChannelFlags : uint { // UInt32 in AudioPanningInfo -- AudioFormat.h
@@ -905,7 +905,7 @@ namespace AudioToolbox {
 		}
 
 #if !WATCH
-		[Advice ("Use the strongly typed 'AudioTag' instead.")]
+		//[Advice ("Use the strongly typed 'AudioTag' instead.")]
 		public int Tag {
 			get {
 				return (int) AudioTag;
@@ -915,7 +915,7 @@ namespace AudioToolbox {
 			}
 		}
 
-		[Advice ("Use 'ChannelUsage' instead.")]
+		//[Advice ("Use 'ChannelUsage' instead.")]
 		public int Bitmap {
 			get {
 				return (int) ChannelUsage;
@@ -1160,15 +1160,15 @@ namespace AudioToolbox {
 		}
 #endif // !WATCH
 
-		public NSData AsData ()
-		{
-			int size;
-			
-			var p = ToBlock (out size);
-			var result = NSData.FromBytes (p, (uint) size);
-			Marshal.FreeHGlobal (p);
-			return result;
-		}
+		// public NSData AsData ()
+		// {
+		// 	int size;
+		// 	
+		// 	var p = ToBlock (out size);
+		// 	var result = NSData.FromBytes (p, (uint) size);
+		// 	Marshal.FreeHGlobal (p);
+		// 	return result;
+		// }
 #endif // !COREBUILD
 	}
 
@@ -1180,7 +1180,7 @@ namespace AudioToolbox {
 	}
 
 #if !NETXXX
-	[Watch (3,0)]
+	//[Watch (3,0)]
 #endif
 	public enum MPEG4ObjectID { // long
 		AacMain = 1,

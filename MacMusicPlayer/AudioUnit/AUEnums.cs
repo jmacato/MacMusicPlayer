@@ -188,9 +188,9 @@ namespace AudioUnit
 		TranslateUIDToBox = 1969841250, // 'uidb'
 		ClockDeviceList = 1668049699, //'clk#'
 		TranslateUidToClockDevice = 1969841251, // 'uidc',
-		//[Deprecated (PlatformName.iOS, 15,0, message : "Use the 'ProcessIsMain' element instead.")]
-		//[Deprecated (PlatformName.MacCatalyst, 15,0, message : "Use the 'ProcessIsMain' element instead.")]
-		//[Deprecated (PlatformName.MacOSX, 12,0, message : "Use the 'ProcessIsMain' element instead.")]
+		////[Deprecated (PlatformName.iOS, 15,0, message : "Use the 'ProcessIsMain' element instead.")]
+		////[Deprecated (PlatformName.MacCatalyst, 15,0, message : "Use the 'ProcessIsMain' element instead.")]
+		////[Deprecated (PlatformName.MacOSX, 12,0, message : "Use the 'ProcessIsMain' element instead.")]
 		[Obsolete ("Use the 'ProcessIsMain' element instead.")]
 		ProcessIsMaster = 1835103092, // 'mast'
 		////[iOS (15,0), MacCatalyst (15,0), Mac (12,0), NoTV, NoWatch]
@@ -386,11 +386,11 @@ namespace AudioUnit
 		ReverbRoomType = 10,
 		UsesInternalReverb = 1005,
 		SpatializationAlgorithm = 3000,
-		//[Deprecated (PlatformName.iOS, 9, 0)]
+		////[Deprecated (PlatformName.iOS, 9, 0)]
 		DistanceParams = 3010,
-		//[Deprecated (PlatformName.iOS, 9, 0)]
+		////[Deprecated (PlatformName.iOS, 9, 0)]
 		AttenuationCurve = 3013,
-		//[Deprecated (PlatformName.iOS, 9, 0)]
+		////[Deprecated (PlatformName.iOS, 9, 0)]
 		RenderingFlags = 3003,
 
 		// AUScheduledSoundPlayer
@@ -572,10 +572,10 @@ namespace AudioUnit
 		DynamicsProcessorExpansionThreshold	= 3,
 		DynamicsProcessorAttackTime			= 4,
 		DynamicsProcessorReleaseTime 		= 5,
-		//[Deprecated (PlatformName.iOS, 15, 0, message: "Use 'DynamicsProcessorOverallGain' instead.")]
-		//[Deprecated (PlatformName.TvOS, 15, 0, message: "Use 'DynamicsProcessorOverallGain' instead.")]
-		//[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use 'DynamicsProcessorOverallGain' instead.")]
-		//[Deprecated (PlatformName.MacCatalyst, 15, 0, message: "Use 'DynamicsProcessorOverallGain' instead.")]
+		////[Deprecated (PlatformName.iOS, 15, 0, message: "Use 'DynamicsProcessorOverallGain' instead.")]
+		////[Deprecated (PlatformName.TvOS, 15, 0, message: "Use 'DynamicsProcessorOverallGain' instead.")]
+		////[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use 'DynamicsProcessorOverallGain' instead.")]
+		////[Deprecated (PlatformName.MacCatalyst, 15, 0, message: "Use 'DynamicsProcessorOverallGain' instead.")]
 		DynamicsProcessorMasterGain			= 6,
 		////[iOS (15,0), TV (15,0), Mac (12,0), MacCatalyst (15,0)]
 		DynamicsProcessorOverallGain		= 6,
@@ -667,7 +667,7 @@ namespace AudioUnit
 	////[iOS (8, 0)]
 	public enum SpatialMixerRenderingFlags {
 		InterAuralDelay = (1 << 0),
-		//[Deprecated (PlatformName.iOS, 9, 0)]
+		////[Deprecated (PlatformName.iOS, 9, 0)]
 		DistanceAttenuation = (1 << 2),
 	}
 
@@ -846,7 +846,7 @@ namespace AudioUnit
 		VectorBasedPanning = 4,
 		StereoPassThrough = 5,
 		HrtfHQ = 6,
-		////[iOS (14,0)][TV (14,0)]//[Mac (11,0)]
+		////[iOS (14,0)]//[TV (14,0)]//[Mac (11,0)]
 		UseOutputType = 7,
 	}
 

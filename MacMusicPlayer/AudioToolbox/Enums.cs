@@ -1,10 +1,10 @@
 using System;
-using Foundation;
+// //using Foundation;
 using ObjCRuntime;
 
 namespace AudioToolbox {
-	[NoWatch]
-	[TV (10, 0)]
+	//[NoWatch]
+	//[TV (10, 0)]
 	//[Mac (10, 12)]
 	//[iOS (10, 0)]
 	[Flags]
@@ -16,8 +16,8 @@ namespace AudioToolbox {
 		UserInterfaceParameter = (1u << 3),
 	}
 
-	[NoWatch]
-	[TV (14, 0)]
+	//[NoWatch]
+	//[TV (14, 0)]
 	//[Mac (11, 0)]
 	//[iOS (14, 0)]
 	public enum AUSpatialMixerOutputType : uint
@@ -27,8 +27,8 @@ namespace AudioToolbox {
 		ExternalSpeakers = 3,
 	}
 
-	[NoWatch]
-	[TV (14, 0)]
+	//[NoWatch]
+	//[TV (14, 0)]
 	//[Mac (11, 0)]
 	//[iOS (14, 0)]
 	public enum AUSpatialMixerPointSourceInHeadMode : uint
@@ -37,8 +37,8 @@ namespace AudioToolbox {
 		Bypass = 1,
 	}
 
-	[NoWatch]
-	[TV (14, 0)]
+	//[NoWatch]
+	//[TV (14, 0)]
 	//[Mac (11, 0)]
 	//[iOS (14, 0)]
 	public enum AUSpatialMixerSourceMode : uint

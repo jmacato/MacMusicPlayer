@@ -62,7 +62,7 @@ namespace AudioUnit
 	[SupportedOSPlatform ("maccatalyst")]
 	[UnsupportedOSPlatform ("tvos")]
 #else
-	// [NoWatch]
+	// //[NoWatch]
 	// [NoTV]
 	// //[Mac (10,13)]
 	// //[iOS (11,0)]
@@ -130,7 +130,7 @@ namespace AudioUnit
 // 	[SupportedOSPlatform ("maccatalyst")]
 // 	[UnsupportedOSPlatform ("tvos")]
 // #else
-	// [NoWatch]
+	// //[NoWatch]
 	// [NoTV]
 	// //[Mac (10,13)]
 	// //[iOS (11,0)]
@@ -359,8 +359,8 @@ namespace AudioUnit
 // 		[SupportedOSPlatform ("ios14.0")]
 // 		[SupportedOSPlatform ("maccatalyst14.0")]
 // #else
-// 		[NoWatch]
-// 		[TV (14,0)]
+// 		//[NoWatch]
+// 		//[TV (14,0)]
 // 		//[Mac (11,0)]
 // 		//[iOS (14,0)]
 // 		//[MacCatalyst (14,0)]
@@ -374,8 +374,8 @@ namespace AudioUnit
 		[SupportedOSPlatform ("macos11.0")]
 		[SupportedOSPlatform ("maccatalyst14.0")]
 #else
-		// [NoWatch]
-		// [TV (14,0)]
+		// //[NoWatch]
+		// //[TV (14,0)]
 		// //[iOS (14,0)]
 		// //[Mac (11,0)]
 		// //[MacCatalyst (14,0)]
@@ -402,8 +402,8 @@ namespace AudioUnit
 // #endif
 // #else
 // 		//[iOS (7,0)]
-// 		[Deprecated (PlatformName.iOS, 14,0)]
-// 		[Deprecated (PlatformName.TvOS, 14,0)]
+// 		//[Deprecated (PlatformName.iOS, 14,0)]
+// 		//[Deprecated (PlatformName.TvOS, 14,0)]
 // #endif
 		[DllImport (Constants.AudioUnitLibrary)]
 		static extern IntPtr AudioComponentGetIcon (IntPtr comp, float /* float */ desiredPointSize);
@@ -422,8 +422,8 @@ namespace AudioUnit
 #endif
 #else
 		// //[iOS (7,0)]
-		// [Deprecated (PlatformName.iOS, 14,0, message: "Use 'CopyIcon' instead.")]
-		// [Deprecated (PlatformName.TvOS, 14,0, message: "Use 'CopyIcon' instead.")]
+		// //[Deprecated (PlatformName.iOS, 14,0, message: "Use 'CopyIcon' instead.")]
+		// //[Deprecated (PlatformName.TvOS, 14,0, message: "Use 'CopyIcon' instead.")]
 #endif
 		// public UIKit.UIImage? GetIcon (float desiredPointSize)
 		// {
@@ -448,10 +448,10 @@ namespace AudioUnit
 #endif
 #else
 		// //[iOS (7,0)]
-		// [Deprecated (PlatformName.iOS, 13,0)]
-		// [Deprecated (PlatformName.TvOS, 13,0)]
+		// //[Deprecated (PlatformName.iOS, 13,0)]
+		// //[Deprecated (PlatformName.TvOS, 13,0)]
 		// //[MacCatalyst (14,0)]
-		// [Deprecated (PlatformName.MacCatalyst, 14,0)]
+		// //[Deprecated (PlatformName.MacCatalyst, 14,0)]
 #endif
 		[DllImport (Constants.AudioUnitLibrary)]
 		static extern double AudioComponentGetLastActiveTime (IntPtr comp);
@@ -473,10 +473,10 @@ namespace AudioUnit
 #endif
 #else
 		// //[iOS (7,0)]
-		// [Deprecated (PlatformName.iOS, 13,0, message: "Use 'AudioUnit' instead.")]
-		// [Deprecated (PlatformName.TvOS, 13,0, message: "Use 'AudioUnit' instead.")]
+		// //[Deprecated (PlatformName.iOS, 13,0, message: "Use 'AudioUnit' instead.")]
+		// //[Deprecated (PlatformName.TvOS, 13,0, message: "Use 'AudioUnit' instead.")]
 		// //[MacCatalyst (14,0)]
-		// [Deprecated (PlatformName.MacCatalyst, 14,0, message: "Use 'AudioUnit' instead.")]
+		// //[Deprecated (PlatformName.MacCatalyst, 14,0, message: "Use 'AudioUnit' instead.")]
 #endif
 		public double LastActiveTime {
 			get {
@@ -496,7 +496,7 @@ namespace AudioUnit
 #endif
 #else
 		//[Mac (10,11)]
-		[Deprecated (PlatformName.MacOSX, 11, 0)]
+		//[Deprecated (PlatformName.MacOSX, 11, 0)]
 #endif
 		[DllImport (Constants.AudioUnitLibrary)]
 		static extern IntPtr AudioComponentGetIcon (IntPtr comp);
@@ -512,7 +512,7 @@ namespace AudioUnit
 #endif
 #else
 		//[Mac (10,11)]
-		[Deprecated (PlatformName.MacOSX, 11, 0)]
+		//[Deprecated (PlatformName.MacOSX, 11, 0)]
 #endif
 		public AppKit.NSImage? GetIcon ()
 		{
@@ -527,7 +527,7 @@ namespace AudioUnit
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 #else
-		[NoWatch]
+		//[NoWatch]
 		[NoTV]
 		//[Mac (10,13)]
 		//[iOS (11,0)]
@@ -541,7 +541,7 @@ namespace AudioUnit
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 #else
-		[NoWatch]
+		//[NoWatch]
 		[NoTV]
 		//[Mac (10,13)]
 		//[iOS (11,0)]
@@ -555,7 +555,7 @@ namespace AudioUnit
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 #else
-		[NoWatch]
+		//[NoWatch]
 		[NoTV]
 		//[Mac (10,13)]
 		//[iOS (11,0)]
@@ -630,7 +630,7 @@ namespace AudioUnit
 // 		[SupportedOSPlatform ("maccatalyst")]
 // #else
 // 		//[iOS (14,5)]
-// 		[TV (14,5)]
+// 		//[TV (14,5)]
 // 		//[Mac (11,3)]
 // #endif
 // 		public static NSString LoadOutOfProcess = new NSString ("LoadOutOfProcess");

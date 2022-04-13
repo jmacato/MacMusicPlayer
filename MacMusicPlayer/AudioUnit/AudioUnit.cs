@@ -45,7 +45,7 @@ using AudioToolbox;
 // using AudioToolbox;
 using ObjCRuntime;
 using CoreFoundation;
-// using Foundation;
+// //using Foundation;
  
 
 namespace AudioUnit
@@ -605,10 +605,10 @@ namespace AudioUnit
 #endif
 #else
 		////[iOS (7,0)]
-		//[Deprecated (PlatformName.iOS, 13,0)]
-		//[Deprecated (PlatformName.TvOS, 13,0)]
+		////[Deprecated (PlatformName.iOS, 13,0)]
+		////[Deprecated (PlatformName.TvOS, 13,0)]
 		////[MacCatalyst (14,0)]
-		//[Deprecated (PlatformName.MacCatalyst, 14,0)]
+		////[Deprecated (PlatformName.MacCatalyst, 14,0)]
 #endif
 		[DllImport (Constants.AudioUnitLibrary)]
 		static extern AudioComponentStatus AudioOutputUnitPublish (AudioComponentDescription inDesc, IntPtr /* CFStringRef */ inName, uint /* UInt32 */ inVersion, IntPtr /* AudioUnit */ inOutputUnit);
@@ -630,10 +630,10 @@ namespace AudioUnit
 #endif
 #else
 		////[iOS (7,0)]
-		//[Deprecated (PlatformName.iOS, 13,0, message: "Use 'AudioUnit' instead.")]
-		//[Deprecated (PlatformName.TvOS, 13,0, message: "Use 'AudioUnit' instead.")]
+		////[Deprecated (PlatformName.iOS, 13,0, message: "Use 'AudioUnit' instead.")]
+		////[Deprecated (PlatformName.TvOS, 13,0, message: "Use 'AudioUnit' instead.")]
 		////[MacCatalyst (14,0)]
-		//[Deprecated (PlatformName.MacCatalyst, 14,0, message: "Use 'AudioUnit' instead.")]
+		////[Deprecated (PlatformName.MacCatalyst, 14,0, message: "Use 'AudioUnit' instead.")]
 #endif
 		public AudioComponentStatus AudioOutputUnitPublish (AudioComponentDescription description, string name, uint version = 1)
 		{
@@ -667,9 +667,9 @@ namespace AudioUnit
 #else
 		////[iOS (7,0)]
 		////[MacCatalyst (14,0)]
-		//[Deprecated (PlatformName.iOS, 13,0)]
-		//[Deprecated (PlatformName.TvOS, 13,0)]
-		//[Deprecated (PlatformName.MacCatalyst, 14,0)]
+		////[Deprecated (PlatformName.iOS, 13,0)]
+		////[Deprecated (PlatformName.TvOS, 13,0)]
+		////[Deprecated (PlatformName.MacCatalyst, 14,0)]
 #endif
 		[DllImport (Constants.AudioUnitLibrary)]
 		static extern IntPtr AudioOutputUnitGetHostIcon (IntPtr /* AudioUnit */ au, float /* float */ desiredPointSize);
@@ -691,10 +691,10 @@ namespace AudioUnit
 #endif
 #else
 		// ////[iOS (7,0)]
-		// //[Deprecated (PlatformName.iOS, 13,0, message: "Use 'AudioUnit' instead.")]
-		// //[Deprecated (PlatformName.TvOS, 13,0, message: "Use 'AudioUnit' instead.")]
+		// ////[Deprecated (PlatformName.iOS, 13,0, message: "Use 'AudioUnit' instead.")]
+		// ////[Deprecated (PlatformName.TvOS, 13,0, message: "Use 'AudioUnit' instead.")]
 		// ////[MacCatalyst (14,0)]
-		// //[Deprecated (PlatformName.MacCatalyst, 14,0, message: "Use 'AudioUnit' instead.")]
+		// ////[Deprecated (PlatformName.MacCatalyst, 14,0, message: "Use 'AudioUnit' instead.")]
 #endif
 		// public UIKit.UIImage? GetHostIcon (float desiredPointSize)
 		// {
@@ -914,7 +914,7 @@ namespace AudioUnit
 		static extern AudioUnitStatus MusicDeviceMIDIEvent (IntPtr /* MusicDeviceComponent = void* */ inUnit, uint /* UInt32 */ inStatus, uint /* UInt32 */ inData1, uint /* UInt32 */ inData2, uint /* UInt32 */ inOffsetSampleFrame);
 
 		// TODO: https://github.com/xamarin/xamarin-macios/issues/12489
-		// //[TV (15,0), Mac (12,0), iOS (15,0), MacCatalyst (15,0)]
+		// ////[TV (15,0), Mac (12,0), iOS (15,0), MacCatalyst (15,0)]
 		// [DllImport (Constants.AudioUnitLibrary)]
 		// static extern MusicDeviceMIDIEvent[] MusicDeviceMIDIEventList (IntPtr /* MusicDeviceComponent = void* */ inUnit, uint /* UInt32 */ inOffsetSampleFrame, MIDIEventList eventList);
 
@@ -1101,7 +1101,7 @@ namespace AudioUnit
 		[SupportedOSPlatform ("maccatalyst15.0")]
 #else
 		////[iOS (15,0)]
-		//[TV (15,0)]
+		////[TV (15,0)]
 		////[Mac (12,0)]
 		////[MacCatalyst (15,0)]
 #endif

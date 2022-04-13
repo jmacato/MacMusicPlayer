@@ -157,9 +157,9 @@ namespace AudioUnit
 		[Obsolete ("Starting with ios13.0 use 'AudioTypeConverter.NewTimePitch' instead.", DiagnosticId = "BI1234", UrlFormat = "https://github.com/xamarin/xamarin-macios/wiki/Obsolete")]
 #endif
 #else
-		//[Deprecated (PlatformName.iOS, 13,0, message: "Use 'AudioTypeConverter.NewTimePitch' instead.")]
-		//[Deprecated (PlatformName.TvOS, 13,0, message: "Use 'AudioTypeConverter.NewTimePitch' instead.")]
-		//[Deprecated (PlatformName.WatchOS, 6,0, message: "Use 'AudioTypeConverter.NewTimePitch' instead.")]
+		////[Deprecated (PlatformName.iOS, 13,0, message: "Use 'AudioTypeConverter.NewTimePitch' instead.")]
+		////[Deprecated (PlatformName.TvOS, 13,0, message: "Use 'AudioTypeConverter.NewTimePitch' instead.")]
+		////[Deprecated (PlatformName.WatchOS, 6,0, message: "Use 'AudioTypeConverter.NewTimePitch' instead.")]
 #endif
 		AUiPodTime=0x6970746d, // 'iptm'
 #endif
@@ -221,9 +221,9 @@ namespace AudioUnit
 		[UnsupportedOSPlatform ("maccatalyst")]
 #else
 		//[Unavailable (PlatformName.MacCatalyst)]
-		//[Deprecated (PlatformName.iOS, 13,0, message: "Use 'AudioTypeEffect.GraphicEQ' instead.")]
-		//[Deprecated (PlatformName.TvOS, 13,0, message: "Use 'AudioTypeEffect.GraphicEQ' instead.")]
-		//[Deprecated (PlatformName.WatchOS, 6,0, message: "Use 'AudioTypeEffect.GraphicEQ' instead.")]
+		////[Deprecated (PlatformName.iOS, 13,0, message: "Use 'AudioTypeEffect.GraphicEQ' instead.")]
+		////[Deprecated (PlatformName.TvOS, 13,0, message: "Use 'AudioTypeEffect.GraphicEQ' instead.")]
+		////[Deprecated (PlatformName.WatchOS, 6,0, message: "Use 'AudioTypeEffect.GraphicEQ' instead.")]
 #endif
 		AUiPodEQ=0x69706571, // 'ipeq'
 #endif
@@ -256,7 +256,7 @@ namespace AudioUnit
 		[Obsolete ("Starting with macos10.10 use 'Spacial' instead.", DiagnosticId = "BI1234", UrlFormat = "https://github.com/xamarin/xamarin-macios/wiki/Obsolete")]
 #endif
 #else
-		//[Deprecated (PlatformName.MacOSX, 10, 10, message : "Use 'Spacial' instead.")]
+		////[Deprecated (PlatformName.MacOSX, 10, 10, message : "Use 'Spacial' instead.")]
 #endif
 		ThreeD=0x33646d78, // '3dmx'
 #else
@@ -315,11 +315,11 @@ namespace AudioUnit
 		public AudioComponentType ComponentType;
 		
 		[MarshalAs(UnmanagedType.U4)]
-#if NETXXX && !COREBUILD
+// #if NETXXX && !COREBUILD
 		public AudioUnitSubType ComponentSubType;
-#else
-		public int ComponentSubType;
-#endif
+// #else
+// 		public int ComponentSubType;
+// #endif
         
 		[MarshalAs (UnmanagedType.U4)]
 		public AudioComponentManufacturerType ComponentManufacturer;
@@ -330,12 +330,8 @@ namespace AudioUnit
 		internal AudioComponentDescription (AudioComponentType type, int subType)
 		{
 			ComponentType = type;
-#if NETXXX && !COREBUILD
-			ComponentSubType = (AudioUnitSubType) subType;
-#else
-			ComponentSubType = subType;
-#endif
-			ComponentManufacturer = AudioComponentManufacturerType.Apple;
+ 			ComponentSubType = (AudioUnitSubType) subType;
+            ComponentManufacturer = AudioComponentManufacturerType.Apple;
 			ComponentFlags = (AudioComponentFlag) 0;
 			ComponentFlagsMask = 0;
 		}
