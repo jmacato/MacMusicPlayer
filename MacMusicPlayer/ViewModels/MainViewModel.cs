@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Buffers;
 using System.Collections.Generic;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using AudioToolbox;
@@ -21,16 +22,6 @@ namespace MacMusicPlayer.ViewModels
 
         public MainViewModel()
         {
-            audioStreamBasicDesc.SampleRate = 44_100;
-            audioStreamBasicDesc.Format = AudioFormatType.LinearPCM;
-            audioStreamBasicDesc.FramesPerPacket = 1;
-            audioStreamBasicDesc.ChannelsPerFrame = 2;
-            audioStreamBasicDesc.BytesPerFrame = audioStreamBasicDesc.ChannelsPerFrame * sizeof(ushort);
-            audioStreamBasicDesc.BytesPerPacket = audioStreamBasicDesc.ChannelsPerFrame * sizeof(ushort);
-            audioStreamBasicDesc.BitsPerChannel = 16;
-            audioStreamBasicDesc.Reserved = 0;
-            audioStreamBasicDesc.FormatFlags = AudioFormatFlags.LinearPCMIsSignedInteger;
-
             var op = new AudioComponentDescription()
             {
                 ComponentFlags = 0,
@@ -40,87 +31,80 @@ namespace MacMusicPlayer.ViewModels
                 ComponentSubType = AudioUnitSubType.SystemOutput
             };
 
+
             var _audioComponent = AudioComponent.FindNextComponent(null, ref op);
-            // var _audioComponent = AudioComponent.FindComponent(AudioTypeOutput.Remote);
 
             audioUnit = _audioComponent.CreateAudioUnit();
 
             audioUnit = new AudioUnit.AudioUnit(_audioComponent);
 
-            audioUnit.SetEnableIO(true,
-                AudioUnitScopeType.Output,
-                0 // Remote Input
-            );
+            audioUnit.SetEnableIO(true, AudioUnitScopeType.Output);
 
-            // setting audio format
-            audioUnit.SetFormat(audioStreamBasicDesc,
-                AudioUnitScopeType.Output,
-                0
-            );
+            
+
+            // // setting audio format
+            // audioUnit.SetFormat(audioStreamBasicDesc,
+            //     AudioUnitScopeType.Output,
+            //     0
+            // );
 
 
-            _soundBuffer = new byte[44_100 * 2 * 10];
+            var currentAudioFormat = audioUnit.GetAudioFormat(AudioUnitScopeType.Output);
+            //
+            // var sampleRate = (int) currentAudioFormat.SampleRate;
+            // var buffer = new float[sampleRate];
+            // var amplitude = 100;
+            // var frequency1 = 329.63f;
+            //
+            // for (var n = 0; n < buffer.Length; n++)
+            // {
+            //     buffer[n] = (amplitude * MathF.Sin((2f * MathF.PI * n * frequency1) / sampleRate));
+            // }
+            //  
+            //
+            // _soundBuffer = new byte[buffer.Length * sizeof(float)];
+            //
+            // Buffer.BlockCopy(buffer, 0, _soundBuffer, 0, _soundBuffer.Length);
 
-            Random.Shared.NextBytes(_soundBuffer);
-
-            // audioUnit.SetInputCallback(input_CallBack, AudioUnitScopeType.Input, 1);
+            _soundBuffer = File.ReadAllBytes("/Users/jumarmacato/Documents/Development/MacMusicPlayer/output.raw");
 
             audioUnit.SetRenderCallback(render_CallBack, AudioUnitScopeType.Output, 0);
-
-
             audioUnit.Initialize();
             audioUnit.Start();
         }
-
-
+        
         private unsafe AudioUnitStatus render_CallBack(AudioUnitRenderActionFlags actionFlags, AudioTimeStamp timeStamp,
             uint busNumber, uint numberFrames, AudioBuffers data)
         {
-
             var sndbuf = _soundBuffer[busNumber];
-            
-            var sample = _sampleNum; // frame number to start from
+
             var bufSamples = _soundBuffer.Length; // total number of frames in the sound buffer
-            
+
             var outA = (byte*) data[0].Data; // output audio buffer for L channel
-            var outB = (byte*) data[1].Data; // output audio buffer for R channel
-            
-            // for demonstration purposes we've configured 2 stereo input busses for the mixer unit
-            // but only provide a single channel of data from each input bus when asked and silence for the other channel
-            // alternating as appropriate when asked to render bus 0 or bus 1's input
+            // var outB = (byte*) data[1].Data; // output audio buffer for R channel
+
+            var outAIndex = 0;
             for (var i = 0; i < numberFrames; ++i)
             {
-                outA[i] = (byte) (_soundBuffer[sample++] / 2);
-                outB[i] = (byte) (_soundBuffer[sample++] /  2);
-                if (sample >= bufSamples)
+                for (int t = 0; t < sizeof(float); t++)
                 {
-                    // start over from the beginning of the data, our audio simply loops
-                    Console.WriteLine("Looping data for bus {0} after {1} source frames rendered", busNumber,
-                        sample - 1);
-                    sample = 0;
+                    var o = _soundBuffer[_sampleNum];
+                    ;
+                    outA[outAIndex++] = o;
+                    _sampleNum++;
+
+                    if (_sampleNum >= _soundBuffer.Length)
+                    {
+                        // start over from the beginning of the data, our audio simply loops
+                        // Console.WriteLine("Looping data for bus {0} after {1} source frames rendered", busNumber,
+                        //     _sampleNum - 1);
+                        _sampleNum = 0;
+                    }
                 }
-            }
-            
-            // keep track of where we are in the source data buffer
-            _sampleNum = sample;
-            
-            return AudioUnitStatus.NoError;
 
-            for (int i = 0; i < data.Count; i++)
-            {
-                var buffer = data[i];
-                var bS = buffer.DataByteSize;
-                var randomData = new byte[bS * 2];
-
-                Random.Shared.NextBytes(randomData);
-
-                fixed (void* p = &randomData[0])
-                {
-                    Buffer.MemoryCopy(p, buffer.Data.ToPointer(), bS, bS);
-                }
+                // outB[i] = (byte) (_soundBuffer[sample++]);
             }
 
-            // Console.WriteLine($"PING! {actionFlags} {timeStamp}");
 
             return AudioUnitStatus.NoError;
         }
