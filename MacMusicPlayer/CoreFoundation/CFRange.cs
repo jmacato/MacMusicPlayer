@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 namespace MacMusicPlayer.CoreFoundation;
 
 [StructLayout(LayoutKind.Sequential)]
-public struct CfRange
+public readonly struct CFRange
 {
     private readonly nint loc; // defined as 'long' in native code
     private readonly nint len; // defined as 'long' in native code
@@ -16,19 +16,19 @@ public struct CfRange
 
     public long LongLength => len;
 
-    public CfRange(int loc, int len)
+    public CFRange(int loc, int len)
     {
         this.loc = loc;
         this.len = len;
     }
 
-    public CfRange(long l, long len)
+    public CFRange(long l, long len)
     {
         loc = (nint) l;
         this.len = (nint) len;
     }
 
-    public CfRange(nint l, nint len)
+    public CFRange(nint l, nint len)
     {
         loc = l;
         this.len = len;

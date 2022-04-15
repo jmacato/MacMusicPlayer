@@ -4,7 +4,7 @@ using MacMusicPlayer.ObjCRuntime;
 
 namespace MacMusicPlayer.CoreFoundation;
 
-public static class CfObject
+public static class CFObject
 {
     [DllImport(Constants.CoreFoundationLibrary)]
     internal static extern void CFRelease(IntPtr obj);

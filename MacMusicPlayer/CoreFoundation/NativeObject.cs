@@ -60,14 +60,14 @@ namespace MacMusicPlayer.CoreFoundation
         // https://developer.apple.com/documentation/corefoundation/1521269-cfretain?language=occ
         protected virtual void Retain()
         {
-            CfObject.CFRetain(GetCheckedHandle());
+            CFObject.CFRetain(GetCheckedHandle());
         }
 
         // <quote>If cf is NULL, this will cause a runtime error and your application will crash.</quote>
         // https://developer.apple.com/documentation/corefoundation/1521153-cfrelease
         protected virtual void Release()
         {
-            CfObject.CFRelease(GetCheckedHandle());
+            CFObject.CFRelease(GetCheckedHandle());
         }
     }
 }

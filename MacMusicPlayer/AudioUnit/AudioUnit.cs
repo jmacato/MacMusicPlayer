@@ -471,11 +471,6 @@ public class AudioUnit : DisposableObject
         ref AudioUnitConnection inData, int inDataSize);
 
     [DllImport(Constants.AudioUnitLibrary)]
-    private static extern AudioUnitStatus AudioUnitSetProperty(IntPtr inUnit, AudioUnitPropertyIDType inID,
-        AudioUnitScopeType inScope, uint inElement,
-        ref AUSamplerInstrumentData inData, int inDataSize);
-
-    [DllImport(Constants.AudioUnitLibrary)]
     private static extern AudioUnitStatus AudioUnitGetProperty(IntPtr inUnit, AudioUnitPropertyIDType inID,
         AudioUnitScopeType inScope, uint inElement,
         ref AudioStreamBasicDescription outData,

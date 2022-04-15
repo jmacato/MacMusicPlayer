@@ -33,7 +33,7 @@ public class AudioUnitParameterInfo
             info.Name = CfString.FromHandle(native.NameString);
 
             if ((native.Flags & AudioUnitParameterFlag.CFNameRelease) != 0)
-                CfObject.CFRelease(native.NameString);
+                CFObject.CFRelease(native.NameString);
         }
 
         if (native.Unit == AudioUnitParameterUnit.CustomUnit) info.UnitName = CfString.FromHandle(native.UnitName);

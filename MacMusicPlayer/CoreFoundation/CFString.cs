@@ -60,7 +60,7 @@ namespace MacMusicPlayer.CoreFoundation
         private static extern unsafe char* CFStringGetCharactersPtr(IntPtr handle);
 
         [DllImport(Constants.CoreFoundationLibrary, CharSet = CharSet.Unicode)]
-        private static extern unsafe IntPtr CFStringGetCharacters(IntPtr handle, CfRange range, char* buffer);
+        private static extern unsafe IntPtr CFStringGetCharacters(IntPtr handle, CFRange range, char* buffer);
 
         public static NativeHandle CreateNative(string? value)
         {
@@ -73,7 +73,7 @@ namespace MacMusicPlayer.CoreFoundation
         public static void ReleaseNative(NativeHandle handle)
         {
             if (handle != NativeHandle.Zero)
-                CfObject.CFRelease(handle);
+                CFObject.CFRelease(handle);
         }
 
         public CfString(string? str)
@@ -110,7 +110,7 @@ namespace MacMusicPlayer.CoreFoundation
 
             string str;
             var allocateMemory = false;
-            var r = new CfRange(0, l);
+            var r = new CFRange(0, l);
             unsafe
             {
                 // this returns non-null only if the string can be represented as unicode
@@ -148,7 +148,7 @@ namespace MacMusicPlayer.CoreFoundation
         {
             var s = FromHandle(handle);
             if (releaseHandle && handle != IntPtr.Zero)
-                CfObject.CFRelease(handle);
+                CFObject.CFRelease(handle);
             return s;
         }
 
