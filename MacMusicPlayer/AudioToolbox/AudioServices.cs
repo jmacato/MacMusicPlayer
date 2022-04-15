@@ -28,44 +28,27 @@
 
 #nullable enable
 
-using System;
 using System.Runtime.InteropServices;
+using MacMusicPlayer.ObjCRuntime;
 
- using ObjCRuntime;
+namespace MacMusicPlayer.AudioToolbox;
 
-namespace AudioToolbox {
+internal static class AudioServices
+{
+    //[DllImport (Constants.AudioToolboxLibrary)]
+    //static extern AudioServicesError AudioServicesGetPropertyInfo (AudioServicesPropertyKey propertyId, uint specifierSize, IntPtr specifier, out uint propertyDataSize, out bool writable);
 
-	public enum AudioServicesError { // Implictly cast to OSType
-		None = 0,
-		UnsupportedProperty = 0x7074793f,		// 'pty?'
-		BadPropertySize = 0x2173697a,			// '!siz'
-		BadSpecifierSizeError = 0x21737063,		// '!spc'
-		SystemSoundUnspecifiedError = -1500,
-		SystemSoundClientTimedOutError = -1501,
-		SystemSoundExceededMaximumDurationError = -1502,
-	}
+    //[DllImport (Constants.AudioToolboxLibrary)]
+    //static extern AudioServicesError AudioServicesGetProperty (AudioServicesPropertyKey propertyId, uint specifierSize, IntPtr specifier, out uint propertyDataSize, IntPtr propertyData);
 
-	enum AudioServicesPropertyKey : uint // UInt32 AudioServicesPropertyID
-	{
-		IsUISound 					= 0x69737569, // 'isui'
-		CompletePlaybackIfAppDies	= 0x69666469  // 'ifdi'
-	}
-	
-	static class AudioServices {
+    [DllImport(Constants.AudioToolboxLibrary)]
+    public static extern AudioServicesError AudioServicesGetProperty(AudioServicesPropertyKey propertyId,
+        uint specifierSize, ref uint specifier, out uint propertyDataSize, out uint propertyData);
 
-		//[DllImport (Constants.AudioToolboxLibrary)]
-		//static extern AudioServicesError AudioServicesGetPropertyInfo (AudioServicesPropertyKey propertyId, uint specifierSize, IntPtr specifier, out uint propertyDataSize, out bool writable);
+    //[DllImport (Constants.AudioToolboxLibrary)]
+    //static extern AudioServicesError AudioServicesSetProperty (AudioServicesPropertyKey propertyId, uint specifierSize, IntPtr specifier, uint propertyDataSize, IntPtr propertyData);
 
-		//[DllImport (Constants.AudioToolboxLibrary)]
-		//static extern AudioServicesError AudioServicesGetProperty (AudioServicesPropertyKey propertyId, uint specifierSize, IntPtr specifier, out uint propertyDataSize, IntPtr propertyData);
-
-		[DllImport (Constants.AudioToolboxLibrary)]
-		public static extern AudioServicesError AudioServicesGetProperty (AudioServicesPropertyKey propertyId, uint specifierSize, ref uint specifier, out uint propertyDataSize, out uint propertyData);
-
-		//[DllImport (Constants.AudioToolboxLibrary)]
-		//static extern AudioServicesError AudioServicesSetProperty (AudioServicesPropertyKey propertyId, uint specifierSize, IntPtr specifier, uint propertyDataSize, IntPtr propertyData);
-
-		[DllImport (Constants.AudioToolboxLibrary)]
-		public static extern AudioServicesError AudioServicesSetProperty (AudioServicesPropertyKey propertyId, uint specifierSize, ref uint specifier, uint propertyDataSize, ref uint propertyData);
-	}
+    [DllImport(Constants.AudioToolboxLibrary)]
+    public static extern AudioServicesError AudioServicesSetProperty(AudioServicesPropertyKey propertyId,
+        uint specifierSize, ref uint specifier, uint propertyDataSize, ref uint propertyData);
 }

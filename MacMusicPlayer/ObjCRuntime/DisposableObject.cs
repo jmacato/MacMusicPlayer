@@ -6,85 +6,83 @@
 //
 // Copyright 2021 Microsoft Corp
 //
+
+#nullable enable
 using System;
-using System.Runtime.InteropServices;
-using ObjCRuntime;
+using NativeHandle = System.IntPtr;
 
-#nullable enable 
+namespace MacMusicPlayer.ObjCRuntime;
 
-using NativeHandle = System.IntPtr; 
+//
+// The DisposableObject class is intended to be a base class for many native data
+// data types, without assuming any particular lifecycle (might be reference counted,
+// might not be).
+//
+// It provides the common boilerplate for this kind of objects and the Dispose
+// pattern.
+//
+public abstract class DisposableObject : INativeObject, IDisposable
+{
+    private IntPtr handle;
+    private readonly bool owns;
 
-namespace ObjCRuntime {
-	//
-	// The DisposableObject class is intended to be a base class for many native data
-	// data types, without assuming any particular lifecycle (might be reference counted,
-	// might not be).
-	//
-	// It provides the common boilerplate for this kind of objects and the Dispose
-	// pattern.
-	//
-	public abstract class DisposableObject : INativeObject, IDisposable {
-		System.IntPtr handle;
-		readonly bool owns;
+    public IntPtr Handle
+    {
+        get => handle;
+        protected set => InitializeHandle(value);
+    }
 
-		public System.IntPtr Handle {
-			get => handle;
-			protected set => InitializeHandle (value);
-		}
+    protected bool Owns => owns;
 
-		protected bool Owns { get => owns; }
+    protected DisposableObject()
+    {
+    }
 
-		protected DisposableObject ()
-		{
-		}
+    protected DisposableObject(NativeHandle handle, bool owns)
+        : this(handle, owns, true)
+    {
+    }
 
-		protected DisposableObject (NativeHandle handle, bool owns)
-			: this (handle, owns, true)
-		{
-		}
+    protected DisposableObject(NativeHandle handle, bool owns, bool verify)
+    {
+        InitializeHandle(handle, verify);
+        this.owns = owns;
+    }
 
-		protected DisposableObject (NativeHandle handle, bool owns, bool verify)
-		{
-			InitializeHandle (handle, verify);
-			this.owns = owns;
-		}
+    ~DisposableObject()
+    {
+        Dispose(false);
+    }
 
-		~DisposableObject ()
-		{
-			Dispose (false);
-		}
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
 
-		public void Dispose ()
-		{
-			Dispose (true);
-			GC.SuppressFinalize (this);
-		}
+    protected virtual void Dispose(bool disposing)
+    {
+        handle = NativeHandle.Zero;
+    }
 
-		protected virtual void Dispose (bool disposing)
-		{
-			handle = NativeHandle.Zero;
-		}
- 
-		void InitializeHandle (NativeHandle handle, bool verify)
-		{ 
-			if (verify && handle == NativeHandle.Zero  ) {
-				throw new Exception ($"Could not initialize an instance of the type '{GetType ().FullName}': handle is null..");
-			} 
-			this.handle = handle;
-		}
+    private void InitializeHandle(NativeHandle handle, bool verify)
+    {
+        if (verify && handle == NativeHandle.Zero)
+            throw new Exception(
+                $"Could not initialize an instance of the type '{GetType().FullName}': handle is null..");
+        this.handle = handle;
+    }
 
-		protected virtual void InitializeHandle (NativeHandle handle)
-		{
-			InitializeHandle (handle, true);
-		}
+    protected virtual void InitializeHandle(NativeHandle handle)
+    {
+        InitializeHandle(handle, true);
+    }
 
-		public NativeHandle GetCheckedHandle ()
-		{
-			var h = handle;
-			if (h == NativeHandle.Zero)
-				ObjCRuntime.ThrowHelper.ThrowObjectDisposedException (this);
-			return h;
-		}
- 
-	}
+    public NativeHandle GetCheckedHandle()
+    {
+        var h = handle;
+        if (h == NativeHandle.Zero)
+            ThrowHelper.ThrowObjectDisposedException(this);
+        return h;
+    }
 }

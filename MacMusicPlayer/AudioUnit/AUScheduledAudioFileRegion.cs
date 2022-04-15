@@ -12,130 +12,114 @@
 
 using System;
 using System.Runtime.InteropServices;
+using MacMusicPlayer.AudioToolbox;
+using MacMusicPlayer.ObjCRuntime;
 
-using AudioToolbox;
-using ObjCRuntime;
-using System.Runtime.Versioning;
+namespace MacMusicPlayer.AudioUnit;
 
-namespace AudioUnit {
+public delegate void AUScheduledAudioFileRegionCompletionHandler(AUScheduledAudioFileRegion audioFileRegion,
+    AudioUnitStatus status);
 
-	public delegate void AUScheduledAudioFileRegionCompletionHandler (AUScheduledAudioFileRegion audioFileRegion, AudioUnitStatus status);
+public class AUScheduledAudioFileRegion : IDisposable
+{
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct ScheduledAudioFileRegion
+    {
+        public AudioTimeStamp TimeStamp;
+        public ScheduledAudioFileRegionCompletionHandler CompletionHandler;
+        public /* void * */ IntPtr CompletionHandlerUserData;
+        public IntPtr AudioFile;
+        public uint LoopCount;
+        public long StartFrame;
+        public uint FramesToPlay;
+    }
 
-#if NETXXX
-	[SupportedOSPlatform ("ios")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("tvos")]
-#endif
-	public class AUScheduledAudioFileRegion : IDisposable {
+    private GCHandle handle;
+    private AUScheduledAudioFileRegionCompletionHandler? completionHandler;
+    private bool alreadyUsed = false;
 
-		[StructLayout (LayoutKind.Sequential)]
-		internal struct ScheduledAudioFileRegion
-		{
-			public AudioTimeStamp TimeStamp;
-#if NETXXX
-			public unsafe delegate* unmanaged<IntPtr, IntPtr, AudioUnitStatus, void> CompletionHandler;
-#else
-			public ScheduledAudioFileRegionCompletionHandler CompletionHandler;
-#endif
-			public /* void * */ IntPtr CompletionHandlerUserData;
-			public IntPtr AudioFile;
-			public uint LoopCount;
-			public long StartFrame;
-			public uint FramesToPlay;
-		}
+    public AudioTimeStamp TimeStamp { get; set; }
+    public AudioFile AudioFile { get; private set; }
+    public uint LoopCount { get; set; }
+    public long StartFrame { get; set; }
+    public uint FramesToPlay { get; set; }
 
-		GCHandle handle;
-		AUScheduledAudioFileRegionCompletionHandler? completionHandler;
-		bool alreadyUsed = false;
+    public AUScheduledAudioFileRegion(AudioFile audioFile,
+        AUScheduledAudioFileRegionCompletionHandler? completionHandler = null)
+    {
+        if (audioFile is null)
+            ThrowHelper.ThrowArgumentNullException(nameof(audioFile));
 
-		public AudioTimeStamp TimeStamp { get; set; }
-		public AudioFile AudioFile { get; private set; }
-		public uint LoopCount { get; set; }
-		public long StartFrame { get; set; }
-		public uint FramesToPlay { get; set; }
+        AudioFile = audioFile;
+        this.completionHandler = completionHandler;
+    }
 
-		public AUScheduledAudioFileRegion (AudioFile audioFile, AUScheduledAudioFileRegionCompletionHandler? completionHandler = null)
-		{
-			if (audioFile is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (audioFile));
+    internal delegate void ScheduledAudioFileRegionCompletionHandler(
+        /* void * */ IntPtr userData,
+        /* ScheduledAudioFileRegion * */ IntPtr fileRegion,
+        /* OSStatus */ AudioUnitStatus result);
 
-			AudioFile = audioFile;
-			this.completionHandler = completionHandler;
-		}
- 
-		internal delegate void ScheduledAudioFileRegionCompletionHandler (
-			/* void * */IntPtr userData, 
-			/* ScheduledAudioFileRegion * */ IntPtr fileRegion,
-			/* OSStatus */ AudioUnitStatus result);
+    private static readonly ScheduledAudioFileRegionCompletionHandler static_ScheduledAudioFileRegionCompletionHandler =
+        new(ScheduledAudioFileRegionCallback);
 
-		static readonly ScheduledAudioFileRegionCompletionHandler static_ScheduledAudioFileRegionCompletionHandler = new ScheduledAudioFileRegionCompletionHandler (ScheduledAudioFileRegionCallback);
+    private static void ScheduledAudioFileRegionCallback(IntPtr userData, IntPtr fileRegion, AudioUnitStatus status)
+    {
+        if (userData == IntPtr.Zero)
+            return;
 
-  //
-		// [UnmanagedCallersOnly] 
-		static void ScheduledAudioFileRegionCallback (IntPtr userData, IntPtr fileRegion, AudioUnitStatus status)
-		{
-			if (userData == IntPtr.Zero)
-				return;
-			
-			var handle = GCHandle.FromIntPtr (userData);
-			var inst = (AUScheduledAudioFileRegion?) handle.Target;
-			if (inst?.completionHandler is not null)
-				inst.completionHandler (inst, status);
-		}
+        var handle = GCHandle.FromIntPtr(userData);
+        var inst = (AUScheduledAudioFileRegion?) handle.Target;
+        if (inst?.completionHandler is not null)
+            inst.completionHandler(inst, status);
+    }
 
-		internal ScheduledAudioFileRegion GetAudioFileRegion ()
-		{
-			if (alreadyUsed)
-				throw new InvalidOperationException ("You should not call SetScheduledFileRegion with a previously set region instance");
+    internal ScheduledAudioFileRegion GetAudioFileRegion()
+    {
+        if (alreadyUsed)
+            throw new InvalidOperationException(
+                "You should not call SetScheduledFileRegion with a previously set region instance");
 
-			IntPtr ptr = IntPtr.Zero;
-			if (completionHandler is not null) {
-				handle = GCHandle.Alloc (this);
-				ptr = GCHandle.ToIntPtr (handle);
-			}
+        var ptr = IntPtr.Zero;
+        if (completionHandler is not null)
+        {
+            handle = GCHandle.Alloc(this);
+            ptr = GCHandle.ToIntPtr(handle);
+        }
 
-			var ret = new ScheduledAudioFileRegion {
-				TimeStamp = TimeStamp,
-				CompletionHandlerUserData = ptr,
-				AudioFile = AudioFile.Handle,
-				LoopCount = LoopCount,
-				StartFrame = StartFrame,
-				FramesToPlay = FramesToPlay
-			};
+        var ret = new ScheduledAudioFileRegion
+        {
+            TimeStamp = TimeStamp,
+            CompletionHandlerUserData = ptr,
+            AudioFile = AudioFile.Handle,
+            LoopCount = LoopCount,
+            StartFrame = StartFrame,
+            FramesToPlay = FramesToPlay
+        };
 
-			if (ptr != IntPtr.Zero) {
-				unsafe {
-#if NETXXX
-					ret.CompletionHandler = &ScheduledAudioFileRegionCallback;
-#else
-					ret.CompletionHandler = static_ScheduledAudioFileRegionCompletionHandler;
-#endif
-				}
-			}
+        if (ptr != IntPtr.Zero)
+            ret.CompletionHandler = static_ScheduledAudioFileRegionCompletionHandler;
 
-			alreadyUsed = true;
-			return ret;
-		}
+        alreadyUsed = true;
+        return ret;
+    }
 
-		~AUScheduledAudioFileRegion ()
-		{
-			Dispose (false);
-		}
+    ~AUScheduledAudioFileRegion()
+    {
+        Dispose(false);
+    }
 
-		public void Dispose ()
-		{
-			Dispose (true);
-			GC.SuppressFinalize (this);
-		}
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
 
-		protected virtual void Dispose (bool disposing)
-		{
-			if (disposing)
-				completionHandler = null;
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+            completionHandler = null;
 
-			if (handle.IsAllocated)
-				handle.Free ();
-		}
-	}
+        if (handle.IsAllocated)
+            handle.Free();
+    }
 }

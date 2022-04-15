@@ -28,67 +28,54 @@
 
 #nullable enable
 
-using System;
 using System.Runtime.InteropServices;
-using CoreFoundation;
+using MacMusicPlayer.AudioUnit;
 //using Foundation;
-using AudioUnit;
-using System.Runtime.Versioning;
 
-namespace AudioToolbox {
+namespace MacMusicPlayer.AudioToolbox;
 
-	// CoreAudio.framework - CoreAudioTypes.h
+// CoreAudio.framework - CoreAudioTypes.h
 #if NETXXX
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 #endif
-	[StructLayout (LayoutKind.Sequential)]
-	public struct AudioClassDescription
-	{
-		public AudioCodecComponentType Type;
-		public AudioFormatType SubType;
-		public AudioCodecManufacturer Manufacturer;
+[StructLayout(LayoutKind.Sequential)]
+public struct AudioClassDescription
+{
+    public AudioCodecComponentType Type;
+    public AudioFormatType SubType;
+    public AudioCodecManufacturer Manufacturer;
 
-		public AudioClassDescription (AudioCodecComponentType type, AudioFormatType subType, AudioCodecManufacturer manufacturer)
-		{
-			Type = type;
-			SubType = subType;
-			Manufacturer = manufacturer;
-		}
+    public AudioClassDescription(AudioCodecComponentType type, AudioFormatType subType,
+        AudioCodecManufacturer manufacturer)
+    {
+        Type = type;
+        SubType = subType;
+        Manufacturer = manufacturer;
+    }
 
-		public bool IsHardwareCodec {
-			get {
-				return Manufacturer == AudioCodecManufacturer.AppleHardware;
-			}
-		}
+    public bool IsHardwareCodec => Manufacturer == AudioCodecManufacturer.AppleHardware;
 
-/*
-		// TODO: Fails with 'prop', so probably Apple never implemented it
-		// The documentation is wrong too
-		public unsafe static uint? HardwareCodecCapabilities (AudioClassDescription[] descriptions)
-		{
-			if (descriptions is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (descriptions));
+    /*
+    // TODO: Fails with 'prop', so probably Apple never implemented it
+    // The documentation is wrong too
+    public unsafe static uint? HardwareCodecCapabilities (AudioClassDescription[] descriptions)
+    {
+        if (descriptions is null)
+            ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (descriptions));
 
-			fixed (AudioClassDescription* item = &descriptions[0]) {
-				uint successfulCodecs;
-				int size = sizeof (uint);
-				var ptr_size = Marshal.SizeOf (typeof (AudioClassDescription)) * descriptions.Length;
-				var res = AudioFormatPropertyNative.AudioFormatGetProperty (AudioFormatProperty.HardwareCodecCapabilities, ptr_size, item, ref size, out successfulCodecs);
-				if (res != 0)
-					return null;
+        fixed (AudioClassDescription* item = &descriptions[0]) {
+            uint successfulCodecs;
+            int size = sizeof (uint);
+            var ptr_size = Marshal.SizeOf (typeof (AudioClassDescription)) * descriptions.Length;
+            var res = AudioFormatPropertyNative.AudioFormatGetProperty (AudioFormatProperty.HardwareCodecCapabilities, ptr_size, item, ref size, out successfulCodecs);
+            if (res != 0)
+                return null;
 
-				return successfulCodecs;
-			}
-		}
+            return successfulCodecs;
+        }
+    }
 */
-	}
-
-	public enum AudioCodecComponentType // Implictly cast to OSType in CoreAudio.framework - CoreAudioTypes.h
-	{
-		Decoder	= 0x61646563,	// 'adec'	
-		Encoder	= 0x61656e63,	// 'aenc'
-	}
 }

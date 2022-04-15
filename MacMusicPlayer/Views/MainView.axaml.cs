@@ -1,12 +1,11 @@
 using Avalonia.Controls;
 
-namespace MacMusicPlayer.Views
+namespace MacMusicPlayer.Views;
+
+public partial class MainView : UserControl
 {
-    public partial class MainView : UserControl
+    public MainView()
     {
-        public MainView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

@@ -32,139 +32,105 @@
 
 using System;
 using System.Runtime.InteropServices;
-// //using Foundation;
-using ObjCRuntime;
-
-#if !NETXXX
+using MacMusicPlayer.ObjCRuntime;
 using NativeHandle = System.IntPtr;
-#endif
 
-namespace CoreFoundation {
+namespace MacMusicPlayer.CoreFoundation
+{
+    public enum CFUrlPathStyle : long
+    {
+        POSIX = 0,
+        HFS = 1,
+        Windows = 2
+    };
 
-	// CFURLPathStyle -> CFIndex -> CFURL.h
-	// [Native]
-	public enum CFUrlPathStyle : long {
-		POSIX = 0,
-		HFS = 1,
-		Windows = 2
-	};
+    public class CFUrl : NativeObject
+    {
+        [DllImport(Constants.CoreFoundationLibrary)]
+        private static extern /* CFURLRef */ IntPtr CFURLCreateWithFileSystemPath( /* CFAllocatorRef */
+            IntPtr allocator,
+            /* CFStringRef */ IntPtr filePath,
+            /* CFURLPathStyle */ nint pathStyle,
+            /* Boolean */ [MarshalAs(UnmanagedType.I1)] bool isDirectory);
 
+        private CFUrl(NativeHandle handle, bool owns)
+            : base(handle, owns)
+        {
+        }
 
-#if NETXXX
-	[SupportedOSPlatform ("ios")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("tvos")]
-#endif
-	// CFURL.h
-	public class CFUrl : NativeObject
-	{
-#if !COREBUILD
-		[DllImport (Constants.CoreFoundationLibrary)]
-		extern static /* CFURLRef */ IntPtr CFURLCreateWithFileSystemPath (/* CFAllocatorRef */ IntPtr allocator, 
-			/* CFStringRef */ IntPtr filePath, 
-			/* CFURLPathStyle */ nint pathStyle, 
-			/* Boolean */ [MarshalAs (UnmanagedType.I1)] bool isDirectory);
-		
-		// //[Preserve (Conditional = true)]
-		internal CFUrl (NativeHandle handle, bool owns)
-			: base (handle, owns)
-		{
-		}
-		
-		static public CFUrl? FromFile (string filename)
-		{
-			if (filename is null)
-				throw new ArgumentNullException (nameof (filename));
-			var strHandle = CFString.CreateNative (filename);
-			try {
-				var handle = CFURLCreateWithFileSystemPath (IntPtr.Zero, strHandle, (nint)(long)CFUrlPathStyle.POSIX, false);
-				if (handle == IntPtr.Zero)
-					return null;
-				return new CFUrl (handle, true);
-			} finally {
-				CFString.ReleaseNative (strHandle);
-			}
-		}
+        public static CFUrl? FromFile(string filename)
+        {
+            if (filename is null)
+                throw new ArgumentNullException(nameof(filename));
+            var strHandle = CfString.CreateNative(filename);
+            try
+            {
+                var handle =
+                    CFURLCreateWithFileSystemPath(IntPtr.Zero, strHandle, (nint) (long) CFUrlPathStyle.POSIX, false);
+                if (handle == IntPtr.Zero)
+                    return null;
+                return new CFUrl(handle, true);
+            }
+            finally
+            {
+                CfString.ReleaseNative(strHandle);
+            }
+        }
 
-		[DllImport (Constants.CoreFoundationLibrary)]
-		extern static /* CFURLRef */ IntPtr CFURLCreateWithString (/* CFAllocatorRef */ IntPtr allocator, 
-			/* CFStringRef */ IntPtr URLString, 
-			/* CFStringRef */ IntPtr baseURL);
+        [DllImport(Constants.CoreFoundationLibrary)]
+        private static extern /* CFURLRef */ IntPtr CFURLCreateWithString( /* CFAllocatorRef */ IntPtr allocator,
+            /* CFStringRef */ IntPtr URLString,
+            /* CFStringRef */ IntPtr baseURL);
 
-		static public CFUrl? FromUrlString (string url, CFUrl? baseurl)
-		{
-			if (url is null)
-				throw new ArgumentNullException (nameof (url));
-			var strHandle = CFString.CreateNative (url);
-			try {
-				return FromStringHandle (strHandle, baseurl);
-			} finally {
-				CFString.ReleaseNative (strHandle);
-			}
-		}
+        public static CFUrl? FromUrlString(string url, CFUrl? baseurl)
+        {
+            if (url is null)
+                throw new ArgumentNullException(nameof(url));
+            var strHandle = CfString.CreateNative(url);
+            try
+            {
+                return FromStringHandle(strHandle, baseurl);
+            }
+            finally
+            {
+                CfString.ReleaseNative(strHandle);
+            }
+        }
 
-		internal static CFUrl? FromStringHandle (IntPtr cfstringHandle, CFUrl? baseurl)
-		{
-			var handle = CFURLCreateWithString (IntPtr.Zero, cfstringHandle, baseurl.GetHandle ());
-			if (handle == IntPtr.Zero)
-				return null;
-			return new CFUrl (handle, true);
-		}
+        internal static CFUrl? FromStringHandle(IntPtr cfstringHandle, CFUrl? baseurl)
+        {
+            var handle = CFURLCreateWithString(IntPtr.Zero, cfstringHandle, baseurl.GetHandle());
+            if (handle == IntPtr.Zero)
+                return null;
+            return new CFUrl(handle, true);
+        }
 
-		[DllImport (Constants.CoreFoundationLibrary)]
-		extern static /* CFStringRef */ IntPtr CFURLGetString (/* CFURLRef */ IntPtr anURL);
-		
-		public override string? ToString ()
-		{
-			return CFString.FromHandle (CFURLGetString (Handle));
-		}
-		
-		[DllImport (Constants.CoreFoundationLibrary)]
-		extern static /* CFStringRef */ IntPtr CFURLCopyFileSystemPath (/* CFURLRef */ IntPtr anURL, 
-			/* CFURLPathStyle */ nint style);
-		
-		public string? FileSystemPath {
-			get {
-				return GetFileSystemPath (Handle);
-			}
-		}
+        [DllImport(Constants.CoreFoundationLibrary)]
+        private static extern /* CFStringRef */ IntPtr CFURLGetString( /* CFURLRef */ IntPtr anURL);
 
-		static internal string? GetFileSystemPath (IntPtr hcfurl)
-		{
-			return CFString.FromHandle (CFURLCopyFileSystemPath (hcfurl, 0), true);
-		}
+        public override string? ToString()
+        {
+            return CfString.FromHandle(CFURLGetString(Handle));
+        }
 
-#if NETXXX
-		[SupportedOSPlatform ("ios7.0")]
-		[SupportedOSPlatform ("macos10.9")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
-#else
-		// //[iOS (7,0)]
-		// //[Mac (10,9)]
-#endif
-		[DllImport (Constants.CoreFoundationLibrary)]
-		[return: MarshalAs (UnmanagedType.I1)]
-		extern static /* Boolean */ bool CFURLIsFileReferenceURL (/* CFURLRef */IntPtr url);
+        [DllImport(Constants.CoreFoundationLibrary)]
+        private static extern /* CFStringRef */ IntPtr CFURLCopyFileSystemPath( /* CFURLRef */ IntPtr anURL,
+            /* CFURLPathStyle */ nint style);
 
-#if NETXXX
-		[SupportedOSPlatform ("ios7.0")]
-		[SupportedOSPlatform ("macos10.9")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
-#else
-		// //[iOS (7,0)]
-		// //[Mac (10,9)]
-#endif
-		public bool IsFileReference {
-			get {
-				return CFURLIsFileReferenceURL (Handle);
-			}
-		}
-		
-		[DllImport (Constants.CoreFoundationLibrary, EntryPoint="CFURLGetTypeID")]
-		public extern static /* CFTypeID */ nint GetTypeID ();
-#endif // !COREBUILD
-	}
+        public string? FileSystemPath => GetFileSystemPath(Handle);
+
+        public static string? GetFileSystemPath(IntPtr hcfurl)
+        {
+            return CfString.FromHandle(CFURLCopyFileSystemPath(hcfurl, 0), true);
+        }
+
+        [DllImport(Constants.CoreFoundationLibrary)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        private static extern /* Boolean */ bool CFURLIsFileReferenceURL( /* CFURLRef */ IntPtr url);
+
+        public bool IsFileReference => CFURLIsFileReferenceURL(Handle);
+
+        [DllImport(Constants.CoreFoundationLibrary, EntryPoint = "CFURLGetTypeID")]
+        public static extern /* CFTypeID */ nint GetTypeID();
+    }
 }

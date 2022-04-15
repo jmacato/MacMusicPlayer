@@ -1,4 +1,4 @@
-namespace ObjCRuntime;
+namespace MacMusicPlayer.ObjCRuntime;
 
 public static class Constants
 {
