@@ -31,7 +31,17 @@ namespace MacMusicPlayer.ViewModels
             audioStreamBasicDesc.Reserved = 0;
             audioStreamBasicDesc.FormatFlags = AudioFormatFlags.LinearPCMIsSignedInteger;
 
-            var _audioComponent = AudioComponent.FindComponent(AudioTypeOutput.Remote);
+            var op = new AudioComponentDescription()
+            {
+                ComponentFlags = 0,
+                ComponentFlagsMask = 0,
+                ComponentManufacturer = AudioComponentManufacturerType.Apple,
+                ComponentType = AudioComponentType.Output,
+                ComponentSubType = AudioUnitSubType.SystemOutput
+            };
+
+            var _audioComponent = AudioComponent.FindNextComponent(null, ref op);
+            // var _audioComponent = AudioComponent.FindComponent(AudioTypeOutput.Remote);
 
             audioUnit = _audioComponent.CreateAudioUnit();
 
@@ -66,22 +76,22 @@ namespace MacMusicPlayer.ViewModels
         private unsafe AudioUnitStatus render_CallBack(AudioUnitRenderActionFlags actionFlags, AudioTimeStamp timeStamp,
             uint busNumber, uint numberFrames, AudioBuffers data)
         {
-            var sndbuf = _soundBuffer[busNumber];
 
+            var sndbuf = _soundBuffer[busNumber];
+            
             var sample = _sampleNum; // frame number to start from
             var bufSamples = _soundBuffer.Length; // total number of frames in the sound buffer
-
-            var outA = (int*) data[0].Data; // output audio buffer for L channel
-            var outB = (int*) data[1].Data; // output audio buffer for R channel
-
+            
+            var outA = (byte*) data[0].Data; // output audio buffer for L channel
+            var outB = (byte*) data[1].Data; // output audio buffer for R channel
+            
             // for demonstration purposes we've configured 2 stereo input busses for the mixer unit
             // but only provide a single channel of data from each input bus when asked and silence for the other channel
             // alternating as appropriate when asked to render bus 0 or bus 1's input
             for (var i = 0; i < numberFrames; ++i)
             {
-                outA[i] = _soundBuffer[sample++];
-                outB[i] = _soundBuffer[sample++];
-                
+                outA[i] = (byte) (_soundBuffer[sample++] / 2);
+                outB[i] = (byte) (_soundBuffer[sample++] /  2);
                 if (sample >= bufSamples)
                 {
                     // start over from the beginning of the data, our audio simply loops
@@ -90,10 +100,10 @@ namespace MacMusicPlayer.ViewModels
                     sample = 0;
                 }
             }
-
+            
             // keep track of where we are in the source data buffer
             _sampleNum = sample;
-
+            
             return AudioUnitStatus.NoError;
 
             for (int i = 0; i < data.Count; i++)
@@ -110,7 +120,7 @@ namespace MacMusicPlayer.ViewModels
                 }
             }
 
-            Console.WriteLine($"PING! {actionFlags} {timeStamp}");
+            // Console.WriteLine($"PING! {actionFlags} {timeStamp}");
 
             return AudioUnitStatus.NoError;
         }

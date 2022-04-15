@@ -911,8 +911,7 @@ namespace AudioUnit
 		ScheduledSoundPlayer 	= 0x7373706C, // 'sspl'
 		AudioFilePlayer 		= 0x6166706C, // 'afpl'
 			
-#if MONOMAC
-		HALOutput 				= 0x6168616C, // 'ahal'
+ 		HALOutput 				= 0x6168616C, // 'ahal'
 		DefaultOutput 			= 0x64656620, // 'def '
 		SystemOutput 			= 0x73797320, // 'sys '
 		DLSSynth 				= 0x646C7320, // 'dls '
@@ -930,6 +929,5 @@ namespace AudioUnit
 		SoundFieldPanner 		= 0x616D6269, // 'ambi'
 		HRTFPanner 				= 0x68727466, // 'hrtf'
 		NetReceive 				= 0x6E726376, // 'nrcv'
-#endif
-	}
+ 	}
 }
