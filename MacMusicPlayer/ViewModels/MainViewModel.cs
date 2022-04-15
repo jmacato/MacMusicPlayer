@@ -21,17 +21,19 @@ namespace MacMusicPlayer.ViewModels
 
         public MainViewModel()
         {
-            audioStreamBasicDesc.SampleRate = 44_100;
-            audioStreamBasicDesc.Format = AudioFormatType.LinearPCM;
-            audioStreamBasicDesc.FramesPerPacket = 1;
-            audioStreamBasicDesc.ChannelsPerFrame = 2;
-            audioStreamBasicDesc.BytesPerFrame = audioStreamBasicDesc.ChannelsPerFrame * sizeof(ushort);
-            audioStreamBasicDesc.BytesPerPacket = audioStreamBasicDesc.ChannelsPerFrame * sizeof(ushort);
-            audioStreamBasicDesc.BitsPerChannel = 16;
-            audioStreamBasicDesc.Reserved = 0;
-            audioStreamBasicDesc.FormatFlags = AudioFormatFlags.LinearPCMIsSignedInteger;
+ 
+            
+            var k = new AudioComponentDescription
+            {
+                ComponentFlags = 0,
+                ComponentManufacturer = AudioComponentManufacturerType.Apple,
+                ComponentSubType = AudioUnitSubType.HALOutput,
+                ComponentType = AudioComponentType.Output
+            };
 
-            var _audioComponent = AudioComponent.FindComponent(AudioTypeOutput.Remote);
+
+            var _audioComponent = AudioComponent.FindNextComponent(null, ref k);
+            // var _audioComponent = AudioComponent.FindComponent(AudioTypeOutput.Remote);
 
             audioUnit = _audioComponent.CreateAudioUnit();
 
