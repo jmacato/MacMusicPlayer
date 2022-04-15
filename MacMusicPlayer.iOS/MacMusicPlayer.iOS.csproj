@@ -13,10 +13,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Avalonia.iOS" Version="$(AvaloniaVersion)"/>
+        <PackageReference Include="Avalonia.iOS" Version="$(AvaloniaVersion)" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MacMusicPlayer\MacMusicPlayer.csproj"/>
+        <ProjectReference Include="..\MacMusicPlayer\MacMusicPlayer.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Mono.Android">
+        <HintPath>..\..\..\..\..\..\usr\local\share\dotnet\packs\Microsoft.Android.Ref.31\31.0.101-preview.11.117\ref\net6.0\Mono.Android.dll</HintPath>
+      </Reference>
     </ItemGroup>
 </Project>

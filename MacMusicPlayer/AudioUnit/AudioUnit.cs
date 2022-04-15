@@ -54,7 +54,6 @@ public class AudioUnit : DisposableObject
     private Dictionary<uint, RenderDelegate>? renderer;
     private Dictionary<uint, InputDelegate>? inputs;
 
-    ////[Preserve (Conditional = true)]
     internal AudioUnit(IntPtr handle, bool owns)
         : base(handle, owns)
     {
@@ -138,10 +137,8 @@ public class AudioUnit : DisposableObject
     public unsafe AudioUnitParameterInfo[]? GetParameterList(AudioUnitScopeType scope = AudioUnitScopeType.Global,
         uint audioUnitElement = 0)
     {
-        uint size;
-        bool writable;
         if (AudioUnitGetPropertyInfo(Handle, AudioUnitPropertyIDType.ParameterList, scope, audioUnitElement,
-                out size, out writable) != 0)
+                out var size, out _) != 0)
             return null;
 
         // Array of AudioUnitParameterID = UInt32
@@ -168,18 +165,7 @@ public class AudioUnit : DisposableObject
 
         return info;
     }
-
-    public AudioUnitStatus LoadInstrument(SamplerInstrumentData instrumentData,
-        AudioUnitScopeType scope = AudioUnitScopeType.Global, uint audioUnitElement = 0)
-    {
-        if (instrumentData is null)
-            ThrowHelper.ThrowArgumentNullException(nameof(instrumentData));
-
-        var data = instrumentData.ToStruct();
-        return AudioUnitSetProperty(Handle, AudioUnitPropertyIDType.LoadInstrument, scope, audioUnitElement,
-            ref data, Marshal.SizeOf(typeof(AUSamplerInstrumentData)));
-    }
-
+ 
     public AudioUnitStatus MakeConnection(AudioUnit sourceAudioUnit, uint sourceOutputNumber, uint destInputNumber)
     {
         var auc = new AudioUnitConnection
@@ -252,11 +238,6 @@ public class AudioUnit : DisposableObject
             sizeof(double));
     }
 
-    public AudioUnitStatus MusicDeviceMIDIEvent(uint status, uint data1, uint data2, uint offsetSampleFrame = 0)
-    {
-        return MusicDeviceMIDIEvent(Handle, status, data1, data2, offsetSampleFrame);
-    }
-
     [DllImport(Constants.AudioUnitLibrary)]
     private static extern AudioUnitStatus AudioUnitGetProperty(IntPtr inUnit, AudioUnitPropertyIDType inID,
         AudioUnitScopeType inScope, uint inElement, ref double outData, ref uint ioDataSize);
@@ -290,7 +271,6 @@ public class AudioUnit : DisposableObject
             ref cb, Marshal.SizeOf(cb));
     }
 
-    // // [MonoPInvokeCallback (typeof (CallbackShared))]
     private static AudioUnitStatus RenderCallbackImpl(IntPtr clientData, ref AudioUnitRenderActionFlags actionFlags,
         ref AudioTimeStamp timeStamp, uint busNumber, uint numberFrames, IntPtr data)
     {
@@ -304,10 +284,8 @@ public class AudioUnit : DisposableObject
         if (!renderer.TryGetValue(busNumber, out var render))
             return AudioUnitStatus.Uninitialized;
 
-        using (var buffers = new AudioBuffers(data))
-        {
-            return render(actionFlags, timeStamp, busNumber, numberFrames, buffers);
-        }
+        using var buffers = new AudioBuffers(data);
+        return render(actionFlags, timeStamp, busNumber, numberFrames, buffers);
     }
 
     public AudioUnitStatus SetInputCallback(InputDelegate inputDelegate,
@@ -385,20 +363,18 @@ public class AudioUnit : DisposableObject
 
     public void Start()
     {
-        AudioUnitStatus rv = 0;
         if (!_isPlaying)
         {
-            rv = AudioOutputUnitStart(Handle);
+            AudioOutputUnitStart(Handle);
             _isPlaying = true;
         }
     }
 
     public void Stop()
     {
-        AudioUnitStatus rv = 0;
         if (_isPlaying)
         {
-            rv = AudioOutputUnitStop(Handle);
+            AudioOutputUnitStop(Handle);
             _isPlaying = false;
         }
     }

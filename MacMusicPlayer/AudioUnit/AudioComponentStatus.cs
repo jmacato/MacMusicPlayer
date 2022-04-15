@@ -2,7 +2,6 @@ namespace MacMusicPlayer.AudioUnit;
 
 public enum AudioComponentStatus
 {
-    // Implictly cast to OSType
     OK = 0,
     DuplicateDescription = -66752,
     UnsupportedType = -66751,
@@ -11,7 +10,5 @@ public enum AudioComponentStatus
     NotPermitted = -66748,
     InitializationTimedOut = -66747,
     InvalidFormat = -66746,
-
-    ////[iOS (10,0), Mac (10,12)]
     RenderTimeout = -66745
 }
