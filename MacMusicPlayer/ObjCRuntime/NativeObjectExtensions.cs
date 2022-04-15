@@ -11,7 +11,7 @@ public static class NativeObjectExtensions
         return self is null ? IntPtr.Zero : self.Handle;
     }
 
-    public static IntPtr GetNonNullHandle(this INativeObject self, string argumentName)
+    public static IntPtr GetNonNullHandle(this INativeObject? self, string argumentName)
     {
         if (self is null)
             ThrowHelper.ThrowArgumentNullException(argumentName);
@@ -20,8 +20,11 @@ public static class NativeObjectExtensions
         return self.Handle;
     }
 
-    public static IntPtr GetCheckedHandle(this INativeObject self)
+    public static IntPtr GetCheckedHandle(this INativeObject? self)
     {
+        if (self is null)
+            ThrowHelper.ThrowArgumentNullException(nameof(self));
+        
         var h = self.Handle;
         if (h == IntPtr.Zero)
             ThrowHelper.ThrowObjectDisposedException(self);

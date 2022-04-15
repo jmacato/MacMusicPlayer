@@ -23,16 +23,15 @@ namespace MacMusicPlayer.ObjCRuntime;
 //
 public abstract class DisposableObject : INativeObject, IDisposable
 {
-    private IntPtr handle;
-    private readonly bool owns;
+    private IntPtr _handle;
 
     public IntPtr Handle
     {
-        get => handle;
-        protected set => InitializeHandle(value);
+        get => _handle;
+        protected init => InitializeHandle(value);
     }
 
-    protected bool Owns => owns;
+    protected bool Owns { get; }
 
     protected DisposableObject()
     {
@@ -46,7 +45,7 @@ public abstract class DisposableObject : INativeObject, IDisposable
     protected DisposableObject(NativeHandle handle, bool owns, bool verify)
     {
         InitializeHandle(handle, verify);
-        this.owns = owns;
+        Owns = owns;
     }
 
     ~DisposableObject()
@@ -62,7 +61,7 @@ public abstract class DisposableObject : INativeObject, IDisposable
 
     protected virtual void Dispose(bool disposing)
     {
-        handle = NativeHandle.Zero;
+        _handle = NativeHandle.Zero;
     }
 
     private void InitializeHandle(NativeHandle handle, bool verify)
@@ -70,7 +69,7 @@ public abstract class DisposableObject : INativeObject, IDisposable
         if (verify && handle == NativeHandle.Zero)
             throw new Exception(
                 $"Could not initialize an instance of the type '{GetType().FullName}': handle is null..");
-        this.handle = handle;
+        _handle = handle;
     }
 
     protected virtual void InitializeHandle(NativeHandle handle)
@@ -80,7 +79,7 @@ public abstract class DisposableObject : INativeObject, IDisposable
 
     public NativeHandle GetCheckedHandle()
     {
-        var h = handle;
+        var h = _handle;
         if (h == NativeHandle.Zero)
             ThrowHelper.ThrowObjectDisposedException(this);
         return h;

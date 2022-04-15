@@ -36,7 +36,7 @@ public static class ThrowHelper
     }
 
     [DoesNotReturn]
-    public static void ThrowObjectDisposedException(object o)
+    public static void ThrowObjectDisposedException(object? o)
     {
         throw new ObjectDisposedException(o.GetType().ToString());
     }

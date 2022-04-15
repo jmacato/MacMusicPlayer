@@ -82,7 +82,7 @@ namespace MacMusicPlayer.CoreFoundation
                 ThrowHelper.ThrowArgumentNullException(nameof(str));
 
             Handle = CFStringCreateWithCharacters(IntPtr.Zero, str, str.Length);
-            this.Str = str;
+            Str = str;
         }
 
         [DllImport(Constants.CoreFoundationLibrary, EntryPoint = "CFStringGetTypeID")]

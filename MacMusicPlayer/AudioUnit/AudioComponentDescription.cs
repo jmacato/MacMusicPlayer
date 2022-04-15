@@ -113,24 +113,18 @@ public struct AudioComponentDescription
     {
         const string fmt = "[componentType={0}, subType={1}]";
 
-        switch (ComponentType)
+        return ComponentType switch
         {
-            case AudioComponentType.Output:
-                return string.Format(fmt, ComponentType, (AudioTypeOutput) ComponentSubType);
-            case AudioComponentType.MusicDevice:
-                return string.Format(fmt, ComponentType, (AudioTypeMusicDevice) ComponentSubType);
-            case AudioComponentType.FormatConverter:
-                return string.Format(fmt, ComponentType, (AudioTypeConverter) ComponentSubType);
-            case AudioComponentType.Effect:
-                return string.Format(fmt, ComponentType, (AudioTypeEffect) ComponentSubType);
-            case AudioComponentType.Mixer:
-                return string.Format(fmt, ComponentType, (AudioTypeMixer) ComponentSubType);
-            case AudioComponentType.Panner:
-                return string.Format(fmt, ComponentType, (AudioTypePanner) ComponentSubType);
-            case AudioComponentType.Generator:
-                return string.Format(fmt, ComponentType, (AudioTypeGenerator) ComponentSubType);
-            default:
-                return string.Format(fmt, ComponentType, ComponentSubType);
-        }
+            AudioComponentType.Output => string.Format(fmt, ComponentType, (AudioTypeOutput) ComponentSubType),
+            AudioComponentType.MusicDevice =>
+                string.Format(fmt, ComponentType, (AudioTypeMusicDevice) ComponentSubType),
+            AudioComponentType.FormatConverter => string.Format(fmt, ComponentType,
+                (AudioTypeConverter) ComponentSubType),
+            AudioComponentType.Effect => string.Format(fmt, ComponentType, (AudioTypeEffect) ComponentSubType),
+            AudioComponentType.Mixer => string.Format(fmt, ComponentType, (AudioTypeMixer) ComponentSubType),
+            AudioComponentType.Panner => string.Format(fmt, ComponentType, (AudioTypePanner) ComponentSubType),
+            AudioComponentType.Generator => string.Format(fmt, ComponentType, (AudioTypeGenerator) ComponentSubType),
+            _ => string.Format(fmt, ComponentType, ComponentSubType)
+        };
     }
 }

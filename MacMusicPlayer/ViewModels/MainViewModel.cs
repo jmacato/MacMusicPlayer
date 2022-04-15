@@ -15,9 +15,9 @@ public class MainViewModel : ViewModelBase
     private AudioStreamBasicDescription audioStreamBasicDesc;
     private AudioUnit.AudioUnit audioUnit;
     private string m_recordingFilePath;
-     private readonly byte[] _soundBuffer;
+    private readonly byte[] _soundBuffer;
     private int _sampleNum;
-    
+
     public MainViewModel()
     {
         var op = new AudioComponentDescription()
@@ -28,8 +28,7 @@ public class MainViewModel : ViewModelBase
             ComponentType = AudioComponentType.Output,
             ComponentSubType = AudioUnitSubType.SystemOutput
         };
-
-
+        
         var _audioComponent = AudioComponent.FindNextComponent(null, ref op);
 
         audioUnit = _audioComponent.CreateAudioUnit();
@@ -63,7 +62,7 @@ public class MainViewModel : ViewModelBase
         //
         // Buffer.BlockCopy(buffer, 0, _soundBuffer, 0, _soundBuffer.Length);
 
-        _soundBuffer = File.ReadAllBytes("/Users/jumarmacato/Documents/Development/MacMusicPlayer/output.raw");
+        _soundBuffer = File.ReadAllBytes("/Users/jumarmacato/Documents/Development/MacMusicPlayer/output2.raw");
 
         audioUnit.SetRenderCallback(render_CallBack, AudioUnitScopeType.Output, 0);
         audioUnit.Initialize();
@@ -72,32 +71,22 @@ public class MainViewModel : ViewModelBase
 
     private unsafe AudioUnitStatus render_CallBack(AudioUnitRenderActionFlags actionFlags, AudioTimeStamp timeStamp,
         uint busNumber, uint numberFrames, AudioBuffers data)
-    {
-        var sndbuf = _soundBuffer[busNumber];
+    { 
+        var channelCounters = new int[data.Count];
 
-        var bufSamples = _soundBuffer.Length; // total number of frames in the sound buffer
-
-        var outA = (byte*) data[0].Data; // output audio buffer for L channel
-        // var outB = (byte*) data[1].Data; // output audio buffer for R channel
-
-        var outAIndex = 0;
-        for (var i = 0; i < numberFrames; ++i)
-        for (var t = 0; t < sizeof(float); t++)
+        for (var samples = 0; samples < numberFrames; samples++)
+        for (var channels = 0; channels < data.Count; channels++)
+        for (var sampleByteCounter = 0; sampleByteCounter < sizeof(float); sampleByteCounter++)
         {
-            var o = _soundBuffer[_sampleNum];
-            ;
-            outA[outAIndex++] = o;
+            var sampleByte = _soundBuffer[_sampleNum];
+            var curDat = (byte*) data[channels].Data;
+            curDat[channelCounters[channels]++] = sampleByte;
             _sampleNum++;
 
             if (_sampleNum >= _soundBuffer.Length)
                 // start over from the beginning of the data, our audio simply loops
-                // Console.WriteLine("Looping data for bus {0} after {1} source frames rendered", busNumber,
-                //     _sampleNum - 1);
                 _sampleNum = 0;
         }
-
-        // outB[i] = (byte) (_soundBuffer[sample++]);
-
 
         return AudioUnitStatus.NoError;
     }
